@@ -5,92 +5,280 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GEIO | Acesso Liberado</title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-[#0A0A0A] text-white font-sans selection:bg-neutral-800 antialiased min-h-screen flex flex-col justify-between">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Inter:wght@300;400;700;900&display=swap');
+        
+        :root {
+            --blue-blueprint: #0047AB;
+            --black-abs: #050505;
+            --gray-border: #262626;
+        }
 
-    <nav class="w-full bg-[#0A0A0A] border-b border-[#262626] py-4 px-6 fixed top-0 left-0 z-40 font-mono">
+        html { scroll-behavior: smooth; }
+        
+        body {
+            background-color: var(--black-abs);
+            color: #D4D4D4;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            min-height: screen;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Background Canvas Layer */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        /* Glassmorphism Effect */
+        .glass-panel {
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--gray-border);
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02);
+        }
+
+        /* Ignition Button */
+        .btn-ignition {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 71, 169, 0.5);
+            background: linear-gradient(180deg, rgba(0, 71, 169, 0.8) 0%, rgba(0, 40, 100, 1) 100%);
+        }
+
+        .btn-ignition::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .btn-ignition:hover {
+            box-shadow: 0 0 30px rgba(0, 71, 169, 0.6);
+            transform: translateY(-1px);
+            border-color: #0066FF;
+        }
+
+        .btn-ignition:hover::before {
+            opacity: 1;
+        }
+
+        /* Scanline Effect */
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 10;
+            background: linear-gradient(0deg, rgba(0, 71, 169, 0) 0%, rgba(0, 71, 169, 0.05) 50%, rgba(0, 71, 169, 0) 100%);
+            opacity: 0.1;
+            position: absolute;
+            bottom: 100%;
+            animation: scanline 8s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes scanline {
+            0% { bottom: 100%; }
+            100% { bottom: -100px; }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+    </style>
+</head>
+<body class="selection:bg-blue-900 selection:text-white antialiased">
+
+    <canvas id="bg-canvas"></canvas>
+
+    <nav class="w-full bg-black/80 backdrop-blur-md border-b border-[#262626] py-4 px-6 fixed top-0 left-0 z-50 font-mono">
         <div class="max-w-5xl mx-auto flex justify-between items-center">
             <a href="/" class="flex items-center space-x-3 group">
-                <svg class="w-7 h-7" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H75V25H100V100H0V0ZM25 25H75V75H25V25Z" fill="#D4D4D4"/>
-                    <rect x="75" y="0" width="25" height="25" fill="#0047AB"/>
-                </svg>
+                <div class="relative">
+                    <svg class="w-8 h-8 transition-transform duration-500 group-hover:rotate-90" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H75V25H100V100H0V0ZM25 25H75V75H25V25Z" fill="#D4D4D4"/>
+                        <rect x="75" y="0" width="25" height="25" fill="#0047AB"/>
+                    </svg>
+                    <div class="absolute inset-0 bg-blue-600 blur-lg opacity-0 group-hover:opacity-40 transition-opacity"></div>
+                </div>
                 <div class="flex flex-col">
                     <span class="text-xl font-black tracking-[0.25em] text-white leading-none">GEIO</span>
-                    <span class="text-[8px] text-neutral-500 tracking-widest uppercase mt-0.5">Core Engine v1.2</span>
+                    <span class="text-[8px] text-neutral-500 tracking-widest uppercase mt-0.5">Core Engine v1.2.8</span>
                 </div>
             </a>
-            <div class="flex items-center space-x-2 text-xs text-neutral-400">
-                <span class="w-2 h-2 rounded-full bg-[#0047AB]"></span>
-                <span class="tracking-wider uppercase text-[9px] font-mono text-neutral-500">Secure Access</span>
+            <div class="flex items-center space-x-3 px-3 py-1.5 border border-[#262626] rounded-md bg-black/50">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#0047AB] animate-pulse shadow-[0_0_8px_#0047AB]"></span>
+                <span class="tracking-wider uppercase text-[9px] font-mono text-neutral-400">Secure Access Active</span>
             </div>
         </div>
     </nav>
 
-    <div class="h-24"></div>
+    <div class="h-32"></div>
 
-    <main class="max-w-3xl mx-auto px-6 py-12 text-center my-auto flex flex-col items-center justify-center">
-        <div class="w-16 h-16 bg-[#0047AB]/10 border border-[#0047AB]/30 rounded-full flex items-center justify-center mb-8 text-[#0047AB] shadow-[0_0_20px_rgba(0,71,169,0.2)]">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
-            </svg>
+    <main class="max-w-4xl mx-auto px-6 py-12 text-center my-auto flex flex-col items-center justify-center animate-fade-in">
+        <!-- Success Icon -->
+        <div class="relative mb-10">
+            <div class="absolute inset-0 bg-blue-600 blur-2xl opacity-20 animate-pulse"></div>
+            <div class="w-20 h-20 bg-blue-950/20 border border-blue-500/30 rounded-full flex items-center justify-center text-blue-500 relative z-10">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
         </div>
 
-        <div class="inline-block text-xs font-mono tracking-widest border border-[#262626] text-neutral-400 uppercase px-3 py-1 rounded-full mb-4 bg-neutral-900">
-            Pagamento Confirmado
+        <div class="inline-flex items-center gap-2 text-[10px] font-mono tracking-[0.3em] border border-[#262626] text-neutral-400 uppercase px-5 py-2 rounded-full mb-6 bg-black/40 backdrop-blur-sm">
+            <span class="w-1 h-1 bg-green-500 rounded-full"></span>
+            Pagamento Confirmado / Autenticação Validada
         </div>
 
-        <h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-4 leading-tight">
+        <h1 class="text-4xl md:text-6xl font-black tracking-tighter mb-6 leading-[0.9] text-white">
             O seu Ecossistema Geio <br/>
-            <span class="text-neutral-500">Está Liberado.</span>
+            <span class="text-neutral-600">Está Liberado.</span>
         </h1>
         
-        <p class="text-sm md:text-base text-neutral-400 mb-8 max-w-xl mx-auto leading-relaxed font-mono">
-            Os seus artefatos confidenciais de alta governança foram associados à sua conta. O link de acesso seguro foi enviado para o seu e-mail pela plataforma <strong class="text-white">Kiwify</strong>.
+        <p class="text-sm md:text-base text-neutral-400 mb-12 max-w-xl mx-auto leading-relaxed font-mono uppercase tracking-tight">
+            Os seus artefatos confidenciais de alta governança foram associados à sua conta. O link de acesso seguro foi enviado para o seu e-mail pela plataforma <strong class="text-white border-b border-white/20">Kiwify</strong>.
         </p>
 
-        <div class="grid sm:grid-cols-2 gap-4 w-full text-left font-mono mb-10">
-            <div class="bg-neutral-900/60 border border-[#262626] p-5 rounded-lg flex flex-col justify-between">
-                <div>
-                    <span class="text-[10px] text-[#0047AB] block mb-1">[ ARTEFATO 01 ]</span>
-                    <h3 class="text-white font-sans font-bold text-sm mb-2">Laudo de Diagnóstico Estrutural</h3>
-                    <p class="text-[11px] text-neutral-500 leading-relaxed mb-4">Documento executivo balizado em Engenharia de Sistemas para mitigação de riscos organizacionais (NR-1).</p>
-                </div>
-                <div class="flex items-center gap-2 text-green-500 text-[10px] uppercase tracking-wider font-bold border-t border-[#262626] pt-3">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    Disponível na Kiwify
+        <!-- Artifact Cards -->
+        <div class="grid sm:grid-cols-2 gap-6 w-full text-left font-mono mb-12">
+            <div class="glass-panel p-6 rounded-xl relative overflow-hidden group hover:border-blue-900/50 transition-all">
+                <div class="scanline"></div>
+                <div class="relative z-10">
+                    <span class="text-[10px] text-[#0047AB] font-bold block mb-3 tracking-widest">[ ARTEFATO 01 ]</span>
+                    <h3 class="text-white font-sans font-black text-base mb-3 tracking-tight">Laudo de Diagnóstico Estrutural</h3>
+                    <p class="text-[11px] text-neutral-500 leading-relaxed mb-6 font-light">Documento executivo balizado em Engenharia de Sistemas para mitigação de riscos organizacionais (NR-1).</p>
+                    <div class="flex items-center gap-2 text-green-500 text-[9px] uppercase tracking-[0.2em] font-bold border-t border-[#262626] pt-4">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Disponível na Kiwify
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-neutral-900/60 border border-[#262626] p-5 rounded-lg flex flex-col justify-between">
-                <div>
-                    <span class="text-[10px] text-[#0047AB] block mb-1">[ ARTEFATO 02 ]</span>
-                    <h3 class="text-white font-sans font-bold text-sm mb-2">Matriz Paramétrica de Processos</h3>
-                    <p class="text-[11px] text-neutral-500 leading-relaxed mb-4">Planilha automatizada de cálculo de score de risco operacional e severidade de silos táticos.</p>
-                </div>
-                <div class="flex items-center gap-2 text-green-500 text-[10px] uppercase tracking-wider font-bold border-t border-[#262626] pt-3">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    Disponível na Kiwify
+            <div class="glass-panel p-6 rounded-xl relative overflow-hidden group hover:border-blue-900/50 transition-all">
+                <div class="scanline"></div>
+                <div class="relative z-10">
+                    <span class="text-[10px] text-[#0047AB] font-bold block mb-3 tracking-widest">[ ARTEFATO 02 ]</span>
+                    <h3 class="text-white font-sans font-black text-base mb-3 tracking-tight">Matriz Paramétrica de Processos</h3>
+                    <p class="text-[11px] text-neutral-500 leading-relaxed mb-6 font-light">Planilha automatizada de cálculo de score de risco operacional e severidade de silos táticos.</p>
+                    <div class="flex items-center gap-2 text-green-500 text-[9px] uppercase tracking-[0.2em] font-bold border-t border-[#262626] pt-4">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Disponível na Kiwify
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="space-y-4 w-full max-w-sm mx-auto">
-            <a href="https://dashboard.kiwify.com.br/purchases" target="_blank" class="block w-full bg-[#0047AB] text-white font-mono font-bold py-4 rounded hover:bg-blue-800 transition-colors uppercase tracking-widest text-xs shadow-[0_0_15px_rgba(0,71,169,0.4)]">
+        <!-- CTA Section -->
+        <div class="space-y-6 w-full max-w-sm mx-auto">
+            <a href="https://dashboard.kiwify.com.br/purchases" target="_blank" class="btn-ignition block w-full text-white font-mono font-bold py-5 rounded-lg transition-all uppercase tracking-[0.2em] text-xs shadow-[0_0_30px_rgba(0,71,169,0.4)]">
                 Aceder aos Ficheiros na Kiwify
             </a>
-            <p class="text-[10px] text-neutral-500 font-mono">
-                Não recebeu o e-mail? <br>Verifique a sua caixa de Spam ou <a href="https://wa.me/5534996365898?text=Olá,%20fiz%20a%20compra%20dos%20artefatos%20GEIO%20mas%20não%20encontrei%20o%20email%20de%20acesso." class="text-[#0047AB] hover:underline">acione o Suporte GEIO</a>.
-            </p>
+            <div class="pt-4 border-t border-[#262626]">
+                <p class="text-[10px] text-neutral-600 font-mono uppercase tracking-widest leading-loose">
+                    Não recebeu o e-mail? <br>
+                    <span class="text-neutral-500">Verifique o Spam ou</span> <a href="https://wa.me/5534996365898?text=Olá,%20fiz%20a%20compra%20dos%20artefatos%20GEIO%20mas%20não%20encontrei%20o%20email%20de%20acesso." class="text-[#0047AB] hover:text-blue-400 transition-colors underline underline-offset-4 decoration-blue-900">Acione o Suporte GEIO</a>.
+                </p>
+            </div>
         </div>
     </main>
 
-    <footer class="w-full border-t border-[#262626] bg-black py-8 text-center text-[10px] text-neutral-600 font-mono">
-        <div class="max-w-5xl mx-auto px-6 space-y-2">
-            <p>© 2026 GEIO GESTÃO INTELIGENTE - Farol Incubadora de Empresas (FEPAM)</p>
-            <p>Rua Vereador Chico Filgueira, nº 33, 2º andar, sala 208 (Box 11), Caiçaras, Patos de Minas - MG, CEP: 38.702-178.</p>
+    <div class="h-20"></div>
+
+    <footer class="w-full border-t border-[#262626] bg-black/50 backdrop-blur-lg py-12 text-center text-[10px] text-neutral-600 font-mono">
+        <div class="max-w-5xl mx-auto px-6 space-y-4">
+            <div class="flex justify-center mb-6">
+                <div class="relative opacity-20">
+                    <svg class="w-8 h-8" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H75V25H100V100H0V0ZM25 25H75V75H25V25Z" fill="#D4D4D4"/>
+                        <rect x="75" y="0" width="25" height="25" fill="#0047AB"/>
+                    </svg>
+                </div>
+            </div>
+            <p class="tracking-widest uppercase">© 2026 GEIO GESTÃO INTELIGENTE - Farol Incubadora de Empresas (FEPAM)</p>
+            <p class="max-w-xl mx-auto leading-relaxed">
+                Rua Vereador Chico Filgueira, nº 33, 2º andar, sala 208, Caiçaras, Patos de Minas - MG.
+            </p>
         </div>
     </footer>
 
+    <script>
+        // --- BACKGROUND CANVAS (PARAMETRIC MESH) ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx_bg = canvas.getContext('2d');
+        let dots = [];
+        const dotCount = 40;
+        const maxDist = 250;
+
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            dots = [];
+            for (let i = 0; i < dotCount; i++) {
+                dots.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4
+                });
+            }
+        }
+
+        function drawCanvas() {
+            ctx_bg.clearRect(0, 0, canvas.width, canvas.height);
+            ctx_bg.fillStyle = 'rgba(0, 71, 169, 0.2)';
+            ctx_bg.strokeStyle = 'rgba(0, 71, 169, 0.08)';
+            
+            for (let i = 0; i < dots.length; i++) {
+                let d = dots[i];
+                d.x += d.vx;
+                d.y += d.vy;
+
+                if (d.x < 0 || d.x > canvas.width) d.vx *= -1;
+                if (d.y < 0 || d.y > canvas.height) d.vy *= -1;
+
+                ctx_bg.beginPath();
+                ctx_bg.arc(d.x, d.y, 1, 0, Math.PI * 2);
+                ctx_bg.fill();
+
+                for (let j = i + 1; j < dots.length; j++) {
+                    let d2 = dots[j];
+                    let dist = Math.hypot(d.x - d2.x, d.y - d2.y);
+                    if (dist < maxDist) {
+                        ctx_bg.lineWidth = (1 - dist / maxDist) * 0.5;
+                        ctx_bg.beginPath();
+                        ctx_bg.moveTo(d.x, d.y);
+                        ctx_bg.lineTo(d2.x, d2.y);
+                        ctx_bg.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(drawCanvas);
+        }
+
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+        drawCanvas();
+    </script>
 </body>
 </html>
