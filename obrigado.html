@@ -1,46 +1,40 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GEIO | Acesso Liberado</title>
+    <title>Obrigada! | GEIO Diagnóstico Recebido</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Inter:wght@300;400;700;900&display=swap');
         
         :root {
             --blue-blueprint: #0047AB;
+            --red-alert: #EF4444;
             --black-abs: #050505;
             --gray-border: #262626;
+            --gray-text: #D4D4D4;
         }
 
-        html { scroll-behavior: smooth; }
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .font-mono { 
+            font-family: 'JetBrains Mono', monospace; 
+        }
+
+        html { 
+            scroll-behavior: smooth; 
+        }
         
         body {
             background-color: var(--black-abs);
-            color: #D4D4D4;
-            font-family: 'Inter', sans-serif;
+            color: var(--gray-text);
             overflow-x: hidden;
-            min-height: screen;
-            display: flex;
-            flex-direction: column;
         }
 
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
-
-        /* Background Canvas Layer */
-        #bg-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.4;
-            pointer-events: none;
-        }
-
-        /* Glassmorphism Effect */
+        /* Glassmorphism */
         .glass-panel {
             background: rgba(10, 10, 10, 0.7);
             backdrop-filter: blur(12px);
@@ -49,26 +43,14 @@
             box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02);
         }
 
-        /* Ignition Button */
+        /* Ignition Buttons */
         .btn-ignition {
             position: relative;
             overflow: hidden;
             transition: all 0.3s ease;
             border: 1px solid rgba(0, 71, 169, 0.5);
             background: linear-gradient(180deg, rgba(0, 71, 169, 0.8) 0%, rgba(0, 40, 100, 1) 100%);
-        }
-
-        .btn-ignition::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
+            font-family: 'JetBrains Mono', monospace;
         }
 
         .btn-ignition:hover {
@@ -77,8 +59,9 @@
             border-color: #0066FF;
         }
 
-        .btn-ignition:hover::before {
-            opacity: 1;
+        .btn-ignition:active {
+            transform: scale(0.98);
+            box-shadow: 0 0 10px rgba(0, 71, 169, 0.8);
         }
 
         /* Scanline Effect */
@@ -99,18 +82,50 @@
             100% { bottom: -100px; }
         }
 
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Success Animation */
+        @keyframes successPulse {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
         }
-        .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+
+        .animate-success {
+            animation: successPulse 0.8s ease-out;
+        }
+
+        /* Status Indicator */
+        .status-pulse {
+            width: 8px;
+            height: 8px;
+            background: var(--blue-blueprint);
+            border-radius: 50%;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            box-shadow: 0 0 8px var(--blue-blueprint);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .text-blueprint {
+            color: var(--blue-blueprint);
+        }
+
+        .border-blueprint {
+            border-color: var(--blue-blueprint);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #262626; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #404040; }
     </style>
 </head>
 <body class="selection:bg-blue-900 selection:text-white antialiased">
 
-    <canvas id="bg-canvas"></canvas>
-
+    <!-- Navigation -->
     <nav class="w-full bg-black/80 backdrop-blur-md border-b border-[#262626] py-4 px-6 fixed top-0 left-0 z-50 font-mono">
         <div class="max-w-5xl mx-auto flex justify-between items-center">
             <a href="/" class="flex items-center space-x-3 group">
@@ -119,166 +134,203 @@
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H75V25H100V100H0V0ZM25 25H75V75H25V25Z" fill="#D4D4D4"/>
                         <rect x="75" y="0" width="25" height="25" fill="#0047AB"/>
                     </svg>
-                    <div class="absolute inset-0 bg-blue-600 blur-lg opacity-0 group-hover:opacity-40 transition-opacity"></div>
                 </div>
                 <div class="flex flex-col">
                     <span class="text-xl font-black tracking-[0.25em] text-white leading-none">GEIO</span>
-                    <span class="text-[8px] text-neutral-500 tracking-widest uppercase mt-0.5">Core Engine v1.2.8</span>
+                    <span class="text-[8px] text-neutral-500 tracking-widest uppercase mt-0.5">Core Engine v1.3.0</span>
                 </div>
             </a>
             <div class="flex items-center space-x-3 px-3 py-1.5 border border-[#262626] rounded-md bg-black/50">
-                <span class="w-1.5 h-1.5 rounded-full bg-[#0047AB] animate-pulse shadow-[0_0_8px_#0047AB]"></span>
-                <span class="tracking-wider uppercase text-[9px] font-mono text-neutral-400">Secure Access Active</span>
+                <span class="status-pulse"></span>
+                <span class="tracking-wider uppercase text-[9px] font-mono text-neutral-400">Transação Confirmada</span>
             </div>
         </div>
     </nav>
 
-    <div class="h-32"></div>
+    <div class="h-28"></div>
 
-    <main class="max-w-4xl mx-auto px-6 py-12 text-center my-auto flex flex-col items-center justify-center animate-fade-in">
-        <!-- Success Icon -->
-        <div class="relative mb-10">
-            <div class="absolute inset-0 bg-blue-600 blur-2xl opacity-20 animate-pulse"></div>
-            <div class="w-20 h-20 bg-blue-950/20 border border-blue-500/30 rounded-full flex items-center justify-center text-blue-500 relative z-10">
-                <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+    <!-- Success Section -->
+    <section class="max-w-5xl mx-auto px-6 py-20 text-center relative">
+        <div class="mb-12 animate-success">
+            <div class="inline-flex items-center justify-center w-24 h-24 rounded-full border-2 border-blueprint mb-8">
+                <svg class="w-12 h-12 text-blueprint" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                 </svg>
             </div>
         </div>
 
-        <div class="inline-flex items-center gap-2 text-[10px] font-mono tracking-[0.3em] border border-[#262626] text-neutral-400 uppercase px-5 py-2 rounded-full mb-6 bg-black/40 backdrop-blur-sm">
-            <span class="w-1 h-1 bg-green-500 rounded-full"></span>
-            Pagamento Confirmado / Autenticação Validada
-        </div>
-
-        <h1 class="text-4xl md:text-6xl font-black tracking-tighter mb-6 leading-[0.9] text-white">
-            O seu Ecossistema Geio <br/>
-            <span class="text-neutral-600">Está Liberado.</span>
+        <h1 class="text-5xl md:text-6xl font-black tracking-tighter mb-6 leading-tight text-white font-mono">
+            Transação Confirmada
         </h1>
         
-        <p class="text-sm md:text-base text-neutral-400 mb-12 max-w-xl mx-auto leading-relaxed font-mono uppercase tracking-tight">
-            Os seus artefatos confidenciais de alta governança foram associados à sua conta. O link de acesso seguro foi enviado para o seu e-mail pela plataforma <strong class="text-white border-b border-white/20">Kiwify</strong>.
+        <p class="text-lg md:text-xl text-neutral-400 mb-4 max-w-2xl mx-auto leading-relaxed font-mono">
+            Seu Combo Diagnóstico GEIO foi processado com sucesso.
         </p>
 
-        <!-- Artifact Cards -->
-        <div class="grid sm:grid-cols-2 gap-6 w-full text-left font-mono mb-12">
-            <div class="glass-panel p-6 rounded-xl relative overflow-hidden group hover:border-blue-900/50 transition-all">
-                <div class="scanline"></div>
-                <div class="relative z-10">
-                    <span class="text-[10px] text-[#0047AB] font-bold block mb-3 tracking-widest">[ ARTEFATO 01 ]</span>
-                    <h3 class="text-white font-sans font-black text-base mb-3 tracking-tight">Laudo de Diagnóstico Estrutural</h3>
-                    <p class="text-[11px] text-neutral-500 leading-relaxed mb-6 font-light">Documento executivo balizado em Engenharia de Sistemas para mitigação de riscos organizacionais (NR-1).</p>
-                    <div class="flex items-center gap-2 text-green-500 text-[9px] uppercase tracking-[0.2em] font-bold border-t border-[#262626] pt-4">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        Disponível na Kiwify
-                    </div>
+        <div class="glass-panel p-8 rounded-xl mb-12 max-w-2xl mx-auto">
+            <div class="scanline"></div>
+            <div class="grid grid-cols-2 gap-8 text-center">
+                <div class="border-r border-[#262626]">
+                    <div class="text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-2">Produto</div>
+                    <div class="text-white font-mono font-bold">Combo Diagnóstico</div>
                 </div>
-            </div>
-
-            <div class="glass-panel p-6 rounded-xl relative overflow-hidden group hover:border-blue-900/50 transition-all">
-                <div class="scanline"></div>
-                <div class="relative z-10">
-                    <span class="text-[10px] text-[#0047AB] font-bold block mb-3 tracking-widest">[ ARTEFATO 02 ]</span>
-                    <h3 class="text-white font-sans font-black text-base mb-3 tracking-tight">Matriz Paramétrica de Processos</h3>
-                    <p class="text-[11px] text-neutral-500 leading-relaxed mb-6 font-light">Planilha automatizada de cálculo de score de risco operacional e severidade de silos táticos.</p>
-                    <div class="flex items-center gap-2 text-green-500 text-[9px] uppercase tracking-[0.2em] font-bold border-t border-[#262626] pt-4">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        Disponível na Kiwify
-                    </div>
+                <div>
+                    <div class="text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-2">Valor</div>
+                    <div class="text-blueprint font-mono font-bold text-2xl">R$ 497</div>
                 </div>
             </div>
         </div>
 
-        <!-- CTA Section -->
-        <div class="space-y-6 w-full max-w-sm mx-auto">
-            <a href="https://dashboard.kiwify.com.br/purchases" target="_blank" class="btn-ignition block w-full text-white font-mono font-bold py-5 rounded-lg transition-all uppercase tracking-[0.2em] text-xs shadow-[0_0_30px_rgba(0,71,169,0.4)]">
-                Aceder aos Ficheiros na Kiwify
-            </a>
-            <div class="pt-4 border-t border-[#262626]">
-                <p class="text-[10px] text-neutral-600 font-mono uppercase tracking-widest leading-loose">
-                    Não recebeu o e-mail? <br>
-                    <span class="text-neutral-500">Verifique o Spam ou</span> <a href="https://wa.me/5534996365898?text=Olá,%20fiz%20a%20compra%20dos%20artefatos%20GEIO%20mas%20não%20encontrei%20o%20email%20de%20acesso." class="text-[#0047AB] hover:text-blue-400 transition-colors underline underline-offset-4 decoration-blue-900">Acione o Suporte GEIO</a>.
+        <p class="text-neutral-400 mb-12 max-w-2xl mx-auto font-mono text-sm">
+            Um email com seus artefatos e instruções foi enviado para seu endereço de email. <br/>
+            Verifique sua caixa de entrada (e spam, só por segurança).
+        </p>
+    </section>
+
+    <!-- Next Steps Section -->
+    <section class="max-w-5xl mx-auto px-6 py-20 relative">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-20 bg-gradient-to-b from-[#0047AB] to-transparent"></div>
+        
+        <h2 class="text-[10px] font-mono text-center text-neutral-500 uppercase tracking-[0.5em] mb-16">Próximos Passos</h2>
+
+        <div class="grid md:grid-cols-3 gap-8 mb-12">
+            <!-- Step 1 -->
+            <div class="glass-panel p-8 rounded-xl hover:border-blue-900/50 transition-all group">
+                <div class="text-[#0047AB] text-2xl font-bold mb-4 font-mono">[01]</div>
+                <h3 class="text-lg font-bold text-white mb-4 font-mono">Receber Artefatos</h3>
+                <p class="text-sm text-neutral-400 mb-6 font-mono">
+                    Você receberá por email:
+                    • Matriz Paramétrica GEIO
+                    • Relatório de IIO
+                    • Relatório de CCS
+                    • Guia de Interpretação
                 </p>
-            </div>
-        </div>
-    </main>
-
-    <div class="h-20"></div>
-
-    <footer class="w-full border-t border-[#262626] bg-black/50 backdrop-blur-lg py-12 text-center text-[10px] text-neutral-600 font-mono">
-        <div class="max-w-5xl mx-auto px-6 space-y-4">
-            <div class="flex justify-center mb-6">
-                <div class="relative opacity-20">
-                    <svg class="w-8 h-8" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H75V25H100V100H0V0ZM25 25H75V75H25V25Z" fill="#D4D4D4"/>
-                        <rect x="75" y="0" width="25" height="25" fill="#0047AB"/>
-                    </svg>
+                <div class="text-[10px] font-mono text-neutral-500 uppercase tracking-widest">
+                    ⏱️ Imediato
                 </div>
             </div>
-            <p class="tracking-widest uppercase">© 2026 GEIO GESTÃO INTELIGENTE - Farol Incubadora de Empresas (FEPAM)</p>
-            <p class="max-w-xl mx-auto leading-relaxed">
-                Rua Vereador Chico Filgueira, nº 33, 2º andar, sala 208, Caiçaras, Patos de Minas - MG.
-            </p>
+
+            <!-- Step 2 -->
+            <div class="glass-panel p-8 rounded-xl hover:border-blue-900/50 transition-all group">
+                <div class="text-[#0047AB] text-2xl font-bold mb-4 font-mono">[02]</div>
+                <h3 class="text-lg font-bold text-white mb-4 font-mono">Analisar Resultados</h3>
+                <p class="text-sm text-neutral-400 mb-6 font-mono">
+                    Estude seus indicadores:
+                    • Incompatibilidades detectadas
+                    • Nível de severidade
+                    • Impacto operacional
+                    • Recomendações iniciais
+                </p>
+                <div class="text-[10px] font-mono text-neutral-500 uppercase tracking-widest">
+                    ⏱️ 2-3 dias
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="glass-panel p-8 rounded-xl hover:border-blue-900/50 transition-all group">
+                <div class="text-[#0047AB] text-2xl font-bold mb-4 font-mono">[03]</div>
+                <h3 class="text-lg font-bold text-white mb-4 font-mono">Próxima Fase</h3>
+                <p class="text-sm text-neutral-400 mb-6 font-mono">
+                    Você tem prioridade para:
+                    • Consultoria aprofundada
+                    • Varredura Avançada
+                    • Implementação estruturada
+                    • Suporte técnico contínuo
+                </p>
+                <div class="text-[10px] font-mono text-neutral-500 uppercase tracking-widest">
+                    ⏱️ Quando quiser
+                </div>
+            </div>
         </div>
-    </footer>
+    </section>
 
-    <script>
-        // --- BACKGROUND CANVAS (PARAMETRIC MESH) ---
-        const canvas = document.getElementById('bg-canvas');
-        const ctx_bg = canvas.getContext('2d');
-        let dots = [];
-        const dotCount = 40;
-        const maxDist = 250;
+    <!-- Options Section -->
+    <section class="max-w-5xl mx-auto px-6 py-20 relative">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-20 bg-gradient-to-b from-[#0047AB] to-transparent"></div>
+        
+        <h2 class="text-[10px] font-mono text-center text-neutral-500 uppercase tracking-[0.5em] mb-16">O Que Fazer Agora?</h2>
 
-        function initCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            dots = [];
-            for (let i = 0; i < dotCount; i++) {
-                dots.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    vx: (Math.random() - 0.5) * 0.4,
-                    vy: (Math.random() - 0.5) * 0.4
-                });
-            }
-        }
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Option 1: Explore Combo -->
+            <div class="glass-panel p-8 rounded-xl hover:border-blue-900/50 transition-all group">
+                <div class="text-[#0047AB] text-[10px] mb-4 font-bold tracking-[0.2em] font-mono">[OPÇÃO 01]</div>
+                <h3 class="text-xl font-black text-white mb-4 font-mono">Explorar Combo</h3>
+                <p class="text-sm text-neutral-400 mb-6 font-mono">
+                    Analise seus artefatos, entenda seus indicadores e identifique as principais incompatibilidades organizacionais.
+                </p>
+                <div class="space-y-3">
+                    <div class="flex items-start gap-3">
+                        <span class="text-blueprint mt-1">▸</span>
+                        <span class="text-sm text-neutral-400">Leia o guia de interpretação</span>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="text-blueprint mt-1">▸</span>
+                        <span class="text-sm text-neutral-400">Calcule o impacto financeiro</span>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="text-blueprint mt-1">▸</span>
+                        <span class="text-sm text-neutral-400">Identifique prioridades</span>
+                    </div>
+                </div>
+            </div>
 
-        function drawCanvas() {
-            ctx_bg.clearRect(0, 0, canvas.width, canvas.height);
-            ctx_bg.fillStyle = 'rgba(0, 71, 169, 0.2)';
-            ctx_bg.strokeStyle = 'rgba(0, 71, 169, 0.08)';
+            <!-- Option 2: Upgrade to Varredura -->
+            <div class="glass-panel p-8 rounded-xl hover:border-blue-900/50 transition-all group border-2 border-blueprint/50">
+                <div class="text-[#0047AB] text-[10px] mb-4 font-bold tracking-[0.2em] font-mono">[OPÇÃO 02 — RECOMENDADO]</div>
+                <h3 class="text-xl font-black text-white mb-4 font-mono">Varredura Avançada</h3>
+                <p class="text-sm text-neutral-400 mb-6 font-mono">
+                    Você tem prioridade de atendimento para a consultoria completa com 8 artefatos, plano de ação e implementação supervisionada.
+                </p>
+                <div class="space-y-3 mb-6">
+                    <div class="flex items-start gap-3">
+                        <span class="text-blueprint mt-1">▸</span>
+                        <span class="text-sm text-neutral-400">Diagnóstico aprofundado</span>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="text-blueprint mt-1">▸</span>
+                        <span class="text-sm text-neutral-400">Plano de ação estruturado</span>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="text-blueprint mt-1">▸</span>
+                        <span class="text-sm text-neutral-400">Implementação supervisionada</span>
+                    </div>
+                </div>
+                <a href="https://wa.me/5534996365898?text=Olá,%20recebi%20o%20Combo%20Diagnóstico%20e%20gostaria%20de%20agendar%20a%20Varredura%20Avançada" target="_blank" class="btn-ignition w-full text-white font-mono font-bold py-3 rounded-lg transition-all uppercase tracking-[0.2em] text-xs">
+                    Agendar Agora
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="max-w-5xl mx-auto px-6 py-20 relative">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-20 bg-gradient-to-b from-[#0047AB] to-transparent"></div>
+        
+        <h2 class="text-[10px] font-mono text-center text-neutral-500 uppercase tracking-[0.5em] mb-16">Dúvidas?</h2>
+
+        <div class="glass-panel p-8 rounded-xl text-center">
+            <p class="text-neutral-400 mb-8 font-mono">
+                Entre em contato direto com a Arquiteta-Chefe GEIO
+            </p>
             
-            for (let i = 0; i < dots.length; i++) {
-                let d = dots[i];
-                d.x += d.vx;
-                d.y += d.vy;
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="https://wa.me/5534996365898?text=Olá,%20tenho%20dúvidas%20sobre%20meu%20Combo%20Diagnóstico%20GEIO" target="_blank" class="btn-ignition text-white font-mono font-bold py-4 px-8 rounded-lg transition-all uppercase tracking-[0.2em] text-xs">
+                    WhatsApp: 34 996365898
+                </a>
+                <a href="mailto:daianegondim@unipam.edu.br" class="btn-ignition text-white font-mono font-bold py-4 px-8 rounded-lg transition-all uppercase tracking-[0.2em] text-xs border-blue-900/50 bg-transparent hover:bg-blue-900/20">
+                    Email: daianegondim@unipam.edu.br
+                </a>
+            </div>
+        </div>
+    </section>
 
-                if (d.x < 0 || d.x > canvas.width) d.vx *= -1;
-                if (d.y < 0 || d.y > canvas.height) d.vy *= -1;
-
-                ctx_bg.beginPath();
-                ctx_bg.arc(d.x, d.y, 1, 0, Math.PI * 2);
-                ctx_bg.fill();
-
-                for (let j = i + 1; j < dots.length; j++) {
-                    let d2 = dots[j];
-                    let dist = Math.hypot(d.x - d2.x, d.y - d2.y);
-                    if (dist < maxDist) {
-                        ctx_bg.lineWidth = (1 - dist / maxDist) * 0.5;
-                        ctx_bg.beginPath();
-                        ctx_bg.moveTo(d.x, d.y);
-                        ctx_bg.lineTo(d2.x, d2.y);
-                        ctx_bg.stroke();
-                    }
-                }
-            }
-            requestAnimationFrame(drawCanvas);
-        }
-
-        window.addEventListener('resize', initCanvas);
-        initCanvas();
-        drawCanvas();
-    </script>
+    <!-- Footer -->
+    <footer class="border-t border-[#262626] py-12 px-6 text-center text-neutral-500 text-[10px] font-mono uppercase tracking-widest">
+        <p class="mb-4">© 2026 GEIO GESTÃO INTELIGENTE | CNPJ 60.525.751/0001-53</p>
+        <p class="mb-4">Daiane Gondim — Arquiteta-Chefe</p>
+        <p>
+            <a href="https://geio.tech" class="hover:text-blueprint transition">https://geio.tech</a>
+        </p>
+    </footer>
 </body>
 </html>
