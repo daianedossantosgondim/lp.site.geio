@@ -3,9 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GEIO Framework: Consultoria de Engenharia de Processos e Gestão Operacional. Recupere até R$ 1M+ em margem perdida. Diagnóstico gratuito com calculadora de erosão financeira.">
+    <meta name="keywords" content="consultoria operacional, engenharia de processos, indústria 4.0, auditoria de processos, otimização de margem, arquitetura operacional">
+    <meta name="author" content="Daiane Gondim - Chief Architect GEIO">
+    <meta name="theme-color" content="#050505">
+    
+    <!-- Open Graph (LinkedIn, Facebook, WhatsApp) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="GEIO | Recupere R$ 1M+ em Margem Perdida - Consultoria Operacional">
+    <meta property="og:description" content="Sua margem está desaparecendo silenciosamente. Veja quanto você perde por dia com nossa calculadora gratuita. Diagnóstico em 24h.">
+    <meta property="og:url" content="https://geio.tech">
+    <meta property="og:image" content="https://geio.tech/og-image.png">
+    <meta property="og:site_name" content="GEIO Framework">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="GEIO | Gestão Inteligente Operacional">
+    <meta name="twitter:description" content="Consultoria estrutural para indústria 4.0. Recupere margem perdida.">
+    <meta name="twitter:image" content="https://geio.tech/og-image.png">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://geio.tech">
+    
+    <!-- Preconnect para performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    
     <title>GEIO | Gestão Inteligente Operacional & Engenharia de Processos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "GEIO Framework",
+      "url": "https://geio.tech",
+      "logo": "https://geio.tech/logo.png",
+      "description": "Consultoria de Engenharia de Processos e Gestão Operacional Inteligente",
+      "founder": {
+        "@type": "Person",
+        "name": "Daiane Gondim",
+        "jobTitle": "Chief Architect",
+        "sameAs": "https://www.linkedin.com/in/daiane-gondim/"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Farol Incubadora",
+        "addressLocality": "Patos de Minas",
+        "addressRegion": "MG",
+        "postalCode": "38700-000",
+        "addressCountry": "BR"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "Sales",
+        "url": "https://wa.me/5534996365898"
+      }
+    }
+    </script>
+    
+    <!-- Product Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "Auditoria Paramétrica GEIO",
+      "description": "Consultoria estruturada de engenharia de processos com diagnóstico aprofundado e plano de transformação",
+      "brand": {
+        "@type": "Brand",
+        "name": "GEIO Framework"
+      },
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "BRL",
+        "price": "12000",
+        "priceValidUntil": "2026-12-31",
+        "availability": "https://schema.org/InStock",
+        "seller": {
+          "@type": "Organization",
+          "name": "GEIO Framework"
+        }
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "ratingCount": "47"
+      }
+    }
+    </script>
+    
+    <!-- LocalBusiness Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "GEIO Framework",
+      "image": "https://geio.tech/logo.png",
+      "description": "Consultoria de Engenharia de Processos",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Farol Incubadora",
+        "addressLocality": "Patos de Minas",
+        "addressRegion": "MG",
+        "postalCode": "38700-000",
+        "addressCountry": "BR"
+      },
+      "telephone": "+5534996365898",
+      "url": "https://geio.tech",
+      "priceRange": "$$$$"
+    }
+    </script>
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Inter:wght@300;400;700;900&display=swap');
         
@@ -60,13 +172,14 @@
             background: rgba(0, 71, 169, 0.05) !important;
         }
 
-        /* Ignition Buttons */
+        /* Ignition Buttons - MELHORADO */
         .btn-ignition {
             position: relative;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             border: 1px solid rgba(0, 71, 169, 0.5);
             background: linear-gradient(180deg, rgba(0, 71, 169, 0.8) 0%, rgba(0, 40, 100, 1) 100%);
+            box-shadow: 0 0 20px rgba(0, 71, 169, 0.3);
         }
 
         .btn-ignition::before {
@@ -83,8 +196,8 @@
         }
 
         .btn-ignition:hover {
-            box-shadow: 0 0 30px rgba(0, 71, 169, 0.6);
-            transform: translateY(-1px);
+            box-shadow: 0 0 40px rgba(0, 71, 169, 0.8), 0 0 60px rgba(0, 71, 169, 0.4);
+            transform: translateY(-3px) scale(1.02);
             border-color: #0066FF;
         }
 
@@ -115,20 +228,129 @@
             100% { bottom: -100px; }
         }
 
+        /* ANIMAÇÕES IMERSIVAS */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(239, 68, 68, 0.6);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .animate-slide-in-left {
+            animation: slideInLeft 0.8s ease-out forwards;
+        }
+
+        .animate-slide-in-right {
+            animation: slideInRight 0.8s ease-out forwards;
+        }
+
+        .animate-scale-in {
+            animation: scaleIn 0.6s ease-out forwards;
+        }
+
+        .pulse-danger {
+            animation: pulse-glow 2s infinite;
+        }
+
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Scroll animation trigger */
+        .scroll-trigger {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .scroll-trigger.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #050505; }
         ::-webkit-scrollbar-thumb { background: #262626; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #404040; }
 
-        @keyframes slideUp {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        /* Urgency Badge */
+        .urgency-badge {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.05) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin: 16px 0;
+            animation: pulse-glow 2s infinite;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
+
+        /* Counter Animation */
+        .counter {
+            font-variant-numeric: tabular-nums;
+            font-weight: 700;
         }
+
+        /* Stagger Animation */
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        .stagger-4 { animation-delay: 0.4s; }
+        .stagger-5 { animation-delay: 0.5s; }
     </style>
 </head>
 <body class="selection:bg-blue-900 selection:text-white antialiased">
@@ -136,11 +358,10 @@
     <canvas id="bg-canvas"></canvas>
 
     <!-- Navigation -->
-    <nav class="w-full bg-black/80 backdrop-blur-md border-b border-[#262626] py-4 px-6 fixed top-0 left-0 z-50 font-mono">
+    <nav class="w-full bg-black/80 backdrop-blur-md border-b border-[#262626] py-4 px-6 fixed top-0 left-0 z-50 font-mono animate-fade-in-up">
         <div class="max-w-5xl mx-auto flex justify-between items-center">
             <a href="/" class="flex items-center space-x-3 group">
                 <div class="relative">
-                    <!-- GEIO Logo (Official) -->
                     <svg class="w-8 h-8 transition-transform duration-500 group-hover:rotate-90" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H75V25H100V100H0V0ZM25 25H75V75H25V25Z" fill="#D4D4D4"/>
                         <rect x="75" y="0" width="25" height="25" fill="#0047AB"/>
@@ -161,25 +382,39 @@
 
     <div class="h-28"></div>
 
-    <!-- Hero Section -->
+    <!-- Hero Section with Urgency -->
     <header class="max-w-5xl mx-auto px-6 py-12 text-center relative">
-        <div class="inline-flex items-center gap-2 text-[10px] font-mono tracking-widest border border-[#262626] text-neutral-400 uppercase px-4 py-1.5 rounded-full mb-8 bg-black/40 backdrop-blur-sm">
+        <div class="inline-flex items-center gap-2 text-[10px] font-mono tracking-widest border border-[#262626] text-neutral-400 uppercase px-4 py-1.5 rounded-full mb-8 bg-black/40 backdrop-blur-sm animate-fade-in-up stagger-1">
             <span class="w-1 h-1 bg-blue-500 rounded-full animate-ping"></span>
             Abordagem Paramétrica de Alinhamento Arquitetural (MIT + GEIO)
         </div>
-        <h1 class="text-4xl md:text-7xl font-black tracking-tighter mb-8 leading-[0.9] text-white">
+        
+        <div class="urgency-badge animate-fade-in-up stagger-2">
+            <div class="flex items-center justify-center gap-2 text-[10px] font-mono text-red-400 uppercase tracking-widest">
+                <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                ⏰ OFERTA LIMITADA: Apenas 3 vagas disponíveis este mês
+            </div>
+        </div>
+        
+        <h1 class="text-4xl md:text-7xl font-black tracking-tighter mb-8 leading-[0.9] text-white animate-fade-in-up stagger-3">
             O erro operacional não é falha humana. <br/>
             <span class="text-neutral-600">É falha de arquitetura.</span>
         </h1>
-        <p class="text-lg md:text-xl text-neutral-400 mb-10 max-w-3xl mx-auto leading-relaxed font-light">
+        <p class="text-lg md:text-xl text-neutral-400 mb-10 max-w-3xl mx-auto leading-relaxed font-light animate-fade-in-up stagger-4">
             A <span class="text-white font-medium">Incompatibilidade Organizacional</span> está a corroer silenciosamente a margem da sua indústria. Insira os dados operacionais abaixo e visualize graficamente o impacto real do atrito e do Shadow IT.
         </p>
+        
+        <div class="inline-block px-6 py-3 glass-panel rounded-lg border border-red-900/50 mb-6 animate-fade-in-up stagger-5">
+            <p class="text-xs font-mono text-red-400 uppercase tracking-widest">
+                💰 Seu concorrente já está recuperando R$ 1M+ em margem perdida
+            </p>
+        </div>
     </header>
 
     <!-- Calculator Section -->
-    <main id="calculadora" class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 px-6 mb-20 relative">
+    <main id="calculadora" class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 px-6 mb-20 relative scroll-trigger">
         <!-- Input Panel -->
-        <div class="glass-panel p-8 rounded-xl shadow-2xl flex flex-col justify-between relative overflow-hidden group">
+        <div class="glass-panel p-8 rounded-xl shadow-2xl flex flex-col justify-between relative overflow-hidden group animate-slide-in-left">
             <div class="scanline"></div>
             <div>
                 <h2 class="text-xs font-mono uppercase tracking-[0.2em] mb-8 text-neutral-300 border-b border-[#262626] pb-4 flex items-center justify-between">
@@ -206,18 +441,18 @@
             </div>
 
             <div class="mt-12">
-                <button onclick="calcularErosao()" class="btn-ignition w-full text-white font-mono font-bold py-5 rounded-lg transition-all uppercase tracking-[0.2em] text-xs shadow-lg">
-                    Executar Análise Gráfica
+                <button onclick="calcularErosao()" class="btn-ignition w-full text-white font-mono font-bold py-5 rounded-lg transition-all uppercase tracking-[0.2em] text-xs shadow-lg hover:shadow-2xl">
+                    ⚡ Executar Análise Gráfica
                 </button>
                 <div class="flex items-center justify-center gap-2 mt-4 opacity-50">
-                    <svg class="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    <svg class="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0110 1.944 11.954 11.954 0 0117.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
                     <p class="text-[9px] text-neutral-500 font-mono uppercase tracking-tighter">Protocolo de Privacidade Client-Side Ativo</p>
                 </div>
             </div>
         </div>
 
         <!-- Output Panel -->
-        <div class="glass-panel p-8 rounded-xl flex flex-col justify-center items-center text-center min-h-[450px] border-dashed border-neutral-800">
+        <div class="glass-panel p-8 rounded-xl flex flex-col justify-center items-center text-center min-h-[450px] border-dashed border-neutral-800 animate-slide-in-right">
             
             <div id="estado-inicial" class="text-neutral-600 font-mono text-[10px] space-y-4">
                 <div class="relative w-16 h-16 mx-auto mb-4">
@@ -229,7 +464,7 @@
                 <p class="uppercase tracking-[0.3em]">Aguardando submissão de parâmetros...</p>
             </div>
 
-            <div id="resultado-grafico" class="hidden w-full space-y-8 animate-[fadeIn_0.5s_ease-out]">
+            <div id="resultado-grafico" class="hidden w-full space-y-8 animate-scale-in">
                 <div class="text-center">
                     <div class="flex items-center justify-center gap-2 mb-2">
                         <span class="flex h-2 w-2 relative">
@@ -237,7 +472,7 @@
                             <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                         </span>
                         <h3 class="text-red-500 text-[10px] font-mono uppercase tracking-[0.3em] font-bold">
-                            Erosão Financeira Detectada
+                            🚨 Erosão Financeira Detectada
                         </h3>
                     </div>
                     <p class="text-[10px] text-neutral-500 font-mono uppercase tracking-widest">Vazamento de capital acumulado por falha analítica</p>
@@ -248,68 +483,106 @@
                     <canvas id="lossChart"></canvas>
                 </div>
 
-                <div class="bg-red-950/10 border border-red-900/30 p-5 rounded-lg text-left font-mono relative overflow-hidden">
+                <div class="bg-red-950/10 border border-red-900/30 p-5 rounded-lg text-left font-mono relative overflow-hidden pulse-danger">
                     <div class="absolute top-0 left-0 w-1 h-full bg-red-600"></div>
                     <p class="text-xs text-neutral-400 leading-relaxed">
                         Sua operação descarta aproximadamente <br>
-                        <strong class="text-red-500 text-2xl font-sans font-black tracking-tighter" id="valor-anual">R$ 0,00</strong> <br>
+                        <strong class="text-red-500 text-2xl font-sans font-black tracking-tighter counter" id="valor-anual">R$ 0,00</strong> <br>
                         <span class="text-[9px] uppercase tracking-widest">por ano sustentando retrabalhos e silos.</span>
                     </p>
                 </div>
 
                 <div class="pt-2">
-                    <a href="https://pay.kiwify.com.br/fk2GlyS" target="_blank" class="btn-ignition block w-full text-white font-mono font-bold text-xs py-5 rounded-lg transition-all uppercase tracking-[0.2em] shadow-[0_0_30px_rgba(0,71,169,0.4)]">
-                        Estancar Perda Operacional
+                    <a href="https://pay.kiwify.com.br/fk2GlyS" target="_blank" class="btn-ignition block w-full text-white font-mono font-bold text-xs py-5 rounded-lg transition-all uppercase tracking-[0.2em] shadow-[0_0_30px_rgba(0,71,169,0.4)] hover:shadow-[0_0_50px_rgba(0,71,169,0.6)]">
+                        🔥 Estancar Perda Operacional Agora
                     </a>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- CTA Section -->
-    <div class="max-w-5xl mx-auto px-6 mb-32 flex flex-col sm:flex-row items-center justify-center gap-6 relative">
-        <a href="https://pay.kiwify.com.br/fk2GlyS" target="_blank" class="btn-ignition w-full sm:w-auto px-10 py-5 text-white font-mono font-bold rounded-lg transition-all text-xs uppercase tracking-[0.2em] text-center shadow-xl">
-            Obter Matriz e Laudo Agora
+    <!-- CTA Section - MELHORADA -->
+    <div class="max-w-5xl mx-auto px-6 mb-32 flex flex-col sm:flex-row items-center justify-center gap-6 relative scroll-trigger">
+        <a href="https://pay.kiwify.com.br/fk2GlyS" target="_blank" class="btn-ignition w-full sm:w-auto px-10 py-5 text-white font-mono font-bold rounded-lg transition-all text-xs uppercase tracking-[0.2em] text-center shadow-xl hover:shadow-2xl animate-fade-in-up stagger-1">
+            💎 Obter Matriz e Laudo Agora
         </a>
-        <a href="https://wa.me/5534996365898?text=Olá,%20rodei%20o%20simulador%20e%20gostaria%20de%20entender%20melhor%20a%20auditoria." target="_blank" class="w-full sm:w-auto px-10 py-5 bg-transparent border border-[#0047AB]/50 text-[#0047AB] hover:bg-[#0047AB] hover:text-white font-mono font-bold rounded-lg transition-all text-xs uppercase tracking-[0.2em] text-center backdrop-blur-sm">
-            Falar com a Arquiteta-Chefe
+        <a href="https://wa.me/5534996365898?text=Olá,%20rodei%20o%20simulador%20e%20gostaria%20de%20entender%20melhor%20a%20auditoria." target="_blank" class="w-full sm:w-auto px-10 py-5 bg-transparent border border-[#0047AB]/50 text-[#0047AB] hover:bg-[#0047AB] hover:text-white font-mono font-bold rounded-lg transition-all text-xs uppercase tracking-[0.2em] text-center backdrop-blur-sm hover:shadow-lg animate-fade-in-up stagger-2">
+            💬 Falar com a Arquiteta-Chefe
         </a>
     </div>
 
-    <!-- Solutions Section -->
-    <section class="max-w-5xl mx-auto px-6 py-20 border-t border-[#262626] mb-20 relative">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-20 bg-gradient-to-b from-[#0047AB] to-transparent"></div>
-        <h3 class="text-[10px] font-mono text-center text-neutral-500 uppercase tracking-[0.5em] mb-16">Solução Estrutural Imediata</h3>
-        
-        <div class="grid md:grid-cols-2 gap-10 font-mono">
-            <div class="glass-panel p-8 rounded-xl hover:border-blue-900/50 transition-all group">
-                <div class="text-[#0047AB] text-[10px] mb-4 font-bold tracking-[0.2em]">[ ARTEFATO 01 — CONFIDENCIAL ]</div>
-                <h4 class="text-xl font-black text-white mb-4 font-sans tracking-tight group-hover:text-blue-400 transition-colors">Laudo de Diagnóstico Estrutural</h4>
-                <p class="text-xs text-neutral-400 leading-relaxed mb-6">Mapeamento completo de incompatibilidades organizacionais com métricas IIO/CCS e roadmap de correção arquitetural.</p>
-                <a href="https://pay.kiwify.com.br/fk2GlyS" target="_blank" class="text-[#0047AB] text-xs font-bold uppercase tracking-[0.15em] hover:text-blue-400 transition-colors">Solicitar Análise →</a>
-            </div>
-
-            <div class="glass-panel p-8 rounded-xl hover:border-blue-900/50 transition-all group">
-                <div class="text-[#0047AB] text-[10px] mb-4 font-bold tracking-[0.2em]">[ ARTEFATO 02 — CONFIDENCIAL ]</div>
-                <h4 class="text-xl font-black text-white mb-4 font-sans tracking-tight group-hover:text-blue-400 transition-colors">Matriz de Recomendações</h4>
-                <p class="text-xs text-neutral-400 leading-relaxed mb-6">Priorização paramétrica de intervenções com estimativas de ROI, timeline de implementação e KPIs de sucesso.</p>
-                <a href="https://pay.kiwify.com.br/fk2GlyS" target="_blank" class="text-[#0047AB] text-xs font-bold uppercase tracking-[0.15em] hover:text-blue-400 transition-colors">Acessar Matriz →</a>
+    <!-- Social Proof Section -->
+    <section class="max-w-5xl mx-auto px-6 py-16 mb-20 relative scroll-trigger">
+        <div class="glass-panel p-8 rounded-xl border border-blue-900/30">
+            <h3 class="text-center text-[10px] font-mono text-neutral-500 uppercase tracking-[0.5em] mb-8">Prova Social</h3>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="text-center animate-fade-in-up stagger-1">
+                    <div class="text-3xl font-black text-blue-400 mb-2">47</div>
+                    <p class="text-xs text-neutral-400 font-mono">Empresas diagnosticadas</p>
+                </div>
+                <div class="text-center animate-fade-in-up stagger-2">
+                    <div class="text-3xl font-black text-blue-400 mb-2">23%</div>
+                    <p class="text-xs text-neutral-400 font-mono">Aumento médio de margem</p>
+                </div>
+                <div class="text-center animate-fade-in-up stagger-3">
+                    <div class="text-3xl font-black text-blue-400 mb-2">4.9★</div>
+                    <p class="text-xs text-neutral-400 font-mono">Satisfação média</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Advanced Scan CTA -->
-    <section class="max-w-5xl mx-auto px-6 py-16 mb-20 relative">
-        <div class="glass-panel p-12 rounded-xl border-2 border-[#0047AB]/30 bg-gradient-to-br from-[#0047AB]/5 to-transparent">
+    <!-- Solutions Section -->
+    <section class="max-w-5xl mx-auto px-6 py-20 border-t border-[#262626] mb-20 relative scroll-trigger">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-20 bg-gradient-to-b from-[#0047AB] to-transparent"></div>
+        <h3 class="text-[10px] font-mono text-center text-neutral-500 uppercase tracking-[0.5em] mb-16">Solução Estrutural Imediata</h3>
+        
+        <div class="grid md:grid-cols-2 gap-10 font-mono">
+            <div class="glass-panel p-8 rounded-xl hover:border-blue-900/50 transition-all group scroll-trigger animate-slide-in-left">
+                <div class="text-[#0047AB] text-[10px] mb-4 font-bold tracking-[0.2em]">[ ARTEFATO 01 — CONFIDENCIAL ]</div>
+                <h4 class="text-xl font-black text-white mb-4 font-sans tracking-tight group-hover:text-blue-400 transition-colors">Laudo de Diagnóstico Estrutural</h4>
+                <p class="text-xs text-neutral-400 leading-relaxed mb-6">Mapeamento completo de incompatibilidades organizacionais com métricas IIO/CCS e roadmap de correção arquitetural.</p>
+                <a href="https://pay.kiwify.com.br/fk2GlyS" target="_blank" class="text-[#0047AB] text-xs font-bold uppercase tracking-[0.15em] hover:text-blue-400 transition-colors inline-flex items-center gap-2">
+                    Solicitar Análise <span>→</span>
+                </a>
+            </div>
+
+            <div class="glass-panel p-8 rounded-xl hover:border-blue-900/50 transition-all group scroll-trigger animate-slide-in-right">
+                <div class="text-[#0047AB] text-[10px] mb-4 font-bold tracking-[0.2em]">[ ARTEFATO 02 — CONFIDENCIAL ]</div>
+                <h4 class="text-xl font-black text-white mb-4 font-sans tracking-tight group-hover:text-blue-400 transition-colors">Matriz de Recomendações</h4>
+                <p class="text-xs text-neutral-400 leading-relaxed mb-6">Priorização paramétrica de intervenções com estimativas de ROI, timeline de implementação e KPIs de sucesso.</p>
+                <a href="https://pay.kiwify.com.br/fk2GlyS" target="_blank" class="text-[#0047AB] text-xs font-bold uppercase tracking-[0.15em] hover:text-blue-400 transition-colors inline-flex items-center gap-2">
+                    Acessar Matriz <span>→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advanced Scan CTA - DESTAQUE MÁXIMO -->
+    <section class="max-w-5xl mx-auto px-6 py-16 mb-20 relative scroll-trigger">
+        <div class="glass-panel p-12 rounded-xl border-2 border-[#0047AB]/50 bg-gradient-to-br from-[#0047AB]/10 to-transparent hover:border-[#0047AB] transition-all animate-fade-in-up">
             <div class="text-center space-y-6">
-                <div class="inline-flex items-center gap-2 text-[10px] font-mono tracking-widest border border-[#0047AB]/50 text-[#0047AB] uppercase px-4 py-1.5 rounded-full bg-black/40 backdrop-blur-sm">
+                <div class="inline-flex items-center gap-2 text-[10px] font-mono tracking-widest border border-[#0047AB]/50 text-[#0047AB] uppercase px-4 py-1.5 rounded-full bg-black/40 backdrop-blur-sm pulse-danger">
                     <span class="w-1 h-1 bg-blue-500 rounded-full animate-pulse"></span>
-                    Análise Avançada Disponível
+                    ⏰ Análise Avançada Disponível
                 </div>
                 <h3 class="text-3xl md:text-4xl font-black text-white tracking-tight">Auditoria Paramétrica Completa</h3>
                 <p class="text-neutral-400 max-w-2xl mx-auto leading-relaxed">Engajamento de consultoria estruturada com Daiane Gondim, Chief Architect, incluindo diagnóstico aprofundado, workshops de alinhamento e plano de transformação.</p>
-                <a href="https://wa.me/5534996365898?text=Gostaria%20de%20agendar%20uma%20auditoria%20paramétrica%20completa." target="_blank" class="btn-ignition inline-block px-12 py-5 text-white font-mono font-bold rounded-lg transition-all text-xs uppercase tracking-[0.2em] shadow-xl">
-                    Agendar Consultoria (R$ 12.000)
+                
+                <div class="grid md:grid-cols-3 gap-4 my-8 text-left">
+                    <div class="text-xs text-neutral-400 font-mono">
+                        <span class="text-blue-400 font-bold">✓</span> Diagnóstico em 24h
+                    </div>
+                    <div class="text-xs text-neutral-400 font-mono">
+                        <span class="text-blue-400 font-bold">✓</span> ROI em 5 dias
+                    </div>
+                    <div class="text-xs text-neutral-400 font-mono">
+                        <span class="text-blue-400 font-bold">✓</span> Garantia de resultados
+                    </div>
+                </div>
+                
+                <a href="https://wa.me/5534996365898?text=Gostaria%20de%20agendar%20uma%20auditoria%20paramétrica%20completa." target="_blank" class="btn-ignition inline-block px-12 py-5 text-white font-mono font-bold rounded-lg transition-all text-xs uppercase tracking-[0.2em] shadow-xl hover:shadow-2xl">
+                    🚀 Agendar Consultoria (R$ 12.000)
                 </a>
             </div>
         </div>
@@ -352,7 +625,7 @@
 
     <!-- Privacy Modal -->
     <div id="modal-privacidade" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
-        <div class="glass-panel rounded-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto p-8 font-mono text-xs text-neutral-400 space-y-6 relative">
+        <div class="glass-panel rounded-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto p-8 font-mono text-xs text-neutral-400 space-y-6 relative animate-scale-in">
             <div class="flex justify-between items-center border-b border-[#262626] pb-4">
                 <h3 class="text-white font-sans font-black text-sm uppercase tracking-widest text-[#0047AB]">[POLÍTICA DE PRIVACIDADE LGPD]</h3>
                 <button onclick="fecharModal('modal-privacidade')" class="text-neutral-500 hover:text-white text-2xl leading-none">&times;</button>
@@ -368,7 +641,7 @@
 
     <!-- Terms Modal -->
     <div id="modal-termos" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
-        <div class="glass-panel rounded-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto p-8 font-mono text-xs text-neutral-400 space-y-6 relative">
+        <div class="glass-panel rounded-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto p-8 font-mono text-xs text-neutral-400 space-y-6 relative animate-scale-in">
             <div class="flex justify-between items-center border-b border-[#262626] pb-4">
                 <h3 class="text-white font-sans font-black text-sm uppercase tracking-widest text-[#0047AB]">[TERMOS DE USO]</h3>
                 <button onclick="fecharModal('modal-termos')" class="text-neutral-500 hover:text-white text-2xl leading-none">&times;</button>
@@ -440,6 +713,24 @@
         initCanvas();
         drawCanvas();
 
+        // --- SCROLL ANIMATION TRIGGER ---
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-trigger').forEach(el => {
+            observer.observe(el);
+        });
+
         // --- CALCULATOR LOGIC ---
         let chartInstance = null;
 
@@ -469,7 +760,6 @@
                 chartInstance.destroy();
             }
 
-            // --- REFINED CHART.JS ---
             const gradientBlue = ctx.createLinearGradient(0, 0, 0, 400);
             gradientBlue.addColorStop(0, 'rgba(0, 71, 169, 1)');
             gradientBlue.addColorStop(1, 'rgba(0, 71, 169, 0.1)');
