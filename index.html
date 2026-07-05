@@ -1182,6 +1182,135 @@
             if (localStorage.getItem('geio-cookie-consent') === 'true') {
                 document.getElementById('lgpd-banner').classList.add('hidden');
             }
+            
+            // --- ENHANCED ANIMATIONS & INTERACTIVITY ---
+            
+            // Intersection Observer para animações de entrada ao scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fade-up');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            // Aplicar observer a elementos com classe 'glass-panel', 'proof-block', etc
+            document.querySelectorAll('.glass-panel, .proof-block, .metric-card, section').forEach(el => {
+                observer.observe(el);
+            });
+            
+            // Efeito de hover em botões com feedback visual
+            document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    this.style.transition = 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                });
+            });
+            
+            // Scroll suave para links de navegação
+            document.querySelectorAll('a[href^="#"]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href !== '#' && document.querySelector(href)) {
+                        e.preventDefault();
+                        document.querySelector(href).scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // Animação do background canvas com efeito de profundidade
+            const canvas = document.getElementById('bg-canvas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                let animationId;
+                let time = 0;
+                
+                function resizeCanvas() {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                }
+                
+                function drawAnimatedGrid() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    
+                    // Grid estático
+                    ctx.strokeStyle = 'rgba(0, 71, 169, 0.05)';
+                    ctx.lineWidth = 0.5;
+                    const gridSize = 60;
+                    
+                    for (let x = 0; x < canvas.width; x += gridSize) {
+                        ctx.beginPath();
+                        ctx.moveTo(x, 0);
+                        ctx.lineTo(x, canvas.height);
+                        ctx.stroke();
+                    }
+                    
+                    for (let y = 0; y < canvas.height; y += gridSize) {
+                        ctx.beginPath();
+                        ctx.moveTo(0, y);
+                        ctx.lineTo(canvas.width, y);
+                        ctx.stroke();
+                    }
+                    
+                    // Gradiente animado de profundidade
+                    const gradient = ctx.createRadialGradient(
+                        canvas.width / 2 + Math.sin(time * 0.0005) * 200,
+                        canvas.height / 2 + Math.cos(time * 0.0005) * 200,
+                        0,
+                        canvas.width / 2,
+                        canvas.height / 2,
+                        Math.max(canvas.width, canvas.height)
+                    );
+                    gradient.addColorStop(0, 'rgba(0, 71, 169, 0.08)');
+                    gradient.addColorStop(0.5, 'rgba(0, 71, 169, 0.02)');
+                    gradient.addColorStop(1, 'rgba(0, 71, 169, 0)');
+                    
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    time++;
+                    animationId = requestAnimationFrame(drawAnimatedGrid);
+                }
+                
+                resizeCanvas();
+                window.addEventListener('resize', resizeCanvas);
+                drawAnimatedGrid();
+            }
+            
+            // Validação e teste de links
+            const allLinks = document.querySelectorAll('a[href]');
+            const linkStatus = {};
+            
+            allLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (!linkStatus[href]) {
+                    linkStatus[href] = { count: 0, valid: true };
+                }
+                linkStatus[href].count++;
+                
+                // Validar links internos
+                if (href.startsWith('#') && href !== '#') {
+                    if (!document.querySelector(href)) {
+                        linkStatus[href].valid = false;
+                        console.warn(`⚠️ Link interno inválido: ${href}`);
+                    }
+                }
+            });
+            
+            // Log de status dos links para debug
+            console.log('🔗 Status de Links da Página GEIO:');
+            Object.entries(linkStatus).forEach(([href, status]) => {
+                const icon = status.valid ? '✅' : '❌';
+                console.log(`${icon} ${href} (${status.count}x)`);
+            });
         };
     </script>
 </body>
