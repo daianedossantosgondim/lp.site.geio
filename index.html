@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GEIO | Diagnóstico de Incompatibilidade Organizacional</title>
+    <title>GEIO Diagnóstico | Identifique o Passivo Invisível Destruindo Sua Margem</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Inter:wght@300;400;700;900&display=swap');
@@ -16,17 +16,9 @@
             --gray-text: #D4D4D4;
         }
 
-        * {
-            font-family: 'Inter', sans-serif;
-        }
-
-        .font-mono { 
-            font-family: 'JetBrains Mono', monospace; 
-        }
-
-        html { 
-            scroll-behavior: smooth; 
-        }
+        * { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        html { scroll-behavior: smooth; }
         
         body {
             background-color: var(--black-abs);
@@ -34,19 +26,6 @@
             overflow-x: hidden;
         }
 
-        /* Background Canvas Layer */
-        #bg-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.4;
-            pointer-events: none;
-        }
-
-        /* Glassmorphism / Brushed Metal Effect */
         .glass-panel {
             background: rgba(10, 10, 10, 0.7);
             backdrop-filter: blur(12px);
@@ -55,20 +34,6 @@
             box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02);
         }
 
-        .glass-input {
-            background: rgba(0, 0, 0, 0.6) !important;
-            border: 1px solid var(--gray-border) !important;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .glass-input:focus {
-            border-color: var(--blue-blueprint) !important;
-            box-shadow: 0 0 15px rgba(0, 71, 169, 0.3);
-            background: rgba(0, 71, 169, 0.05) !important;
-        }
-
-        /* Ignition Buttons */
         .btn-ignition {
             position: relative;
             overflow: hidden;
@@ -78,27 +43,10 @@
             font-family: 'JetBrains Mono', monospace;
         }
 
-        .btn-ignition::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
-
         .btn-ignition:hover {
-            box-shadow: 0 0 30px rgba(0, 71, 169, 0.6);
-            transform: translateY(-1px);
+            box-shadow: 0 0 30px rgba(0, 71, 169, 0.6), 0 0 60px rgba(239, 68, 68, 0.2);
+            transform: translateY(-2px);
             border-color: #0066FF;
-        }
-
-        .btn-ignition:hover::before {
-            opacity: 1;
         }
 
         .btn-ignition:active {
@@ -106,7 +54,16 @@
             box-shadow: 0 0 10px rgba(0, 71, 169, 0.8);
         }
 
-        /* Scanline Effect */
+        .btn-alert {
+            background: linear-gradient(180deg, rgba(239, 68, 68, 0.8) 0%, rgba(180, 40, 40, 1) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+        }
+
+        .btn-alert:hover {
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.6);
+            border-color: #FF6666;
+        }
+
         .scanline {
             width: 100%;
             height: 100px;
@@ -124,33 +81,25 @@
             100% { bottom: -100px; }
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #050505; }
-        ::-webkit-scrollbar-thumb { background: #262626; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #404040; }
-
-        /* Status Indicator */
-        .status-pulse {
-            width: 8px;
-            height: 8px;
-            background: var(--blue-blueprint);
-            border-radius: 50%;
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-            box-shadow: 0 0 8px var(--blue-blueprint);
+        @keyframes pulse-danger {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        .pulse-danger {
+            animation: pulse-danger 2s infinite;
         }
 
-        /* Fade In Animation */
-        .animate-fade-in {
-            animation: fadeIn 0.8s ease-in;
+        .text-blueprint { color: var(--blue-blueprint); }
+        .text-alert { color: var(--red-alert); }
+        .border-blueprint { border-color: var(--blue-blueprint); }
+        .border-alert { border-color: var(--red-alert); }
+
+        .counter {
+            font-variant-numeric: tabular-nums;
         }
 
-        @keyframes fadeIn {
+        @keyframes fadeInUp {
             from {
                 opacity: 0;
                 transform: translateY(20px);
@@ -161,285 +110,330 @@
             }
         }
 
-        .text-blueprint {
-            color: var(--blue-blueprint);
-        }
-
-        .border-blueprint {
-            border-color: var(--blue-blueprint);
+        .animate-fade-in {
+            animation: fadeInUp 0.6s ease-out;
         }
     </style>
 </head>
-<body class="selection:bg-blue-900 selection:text-white antialiased">
-
-    <canvas id="bg-canvas"></canvas>
-
-    <!-- Navigation -->
-    <nav class="w-full bg-black/80 backdrop-blur-md border-b border-[#262626] py-4 px-6 fixed top-0 left-0 z-50 font-mono">
-        <div class="max-w-5xl mx-auto flex justify-between items-center">
-            <a href="/" class="flex items-center space-x-3 group">
-                <div class="relative">
-                    <svg class="w-8 h-8 transition-transform duration-500 group-hover:rotate-90" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H75V25H100V100H0V0ZM25 25H75V75H25V25Z" fill="#D4D4D4"/>
-                        <rect x="75" y="0" width="25" height="25" fill="#0047AB"/>
-                    </svg>
-                    <div class="absolute inset-0 bg-blue-600 blur-lg opacity-0 group-hover:opacity-40 transition-opacity"></div>
-                </div>
-                <div class="flex flex-col">
-                    <span class="text-xl font-black tracking-[0.25em] text-white leading-none">GEIO</span>
-                    <span class="text-[8px] text-neutral-500 tracking-widest uppercase mt-0.5">Core Engine v1.3.0</span>
-                </div>
-            </a>
-            <div class="flex items-center space-x-3 px-3 py-1.5 border border-[#262626] rounded-md bg-black/50">
-                <span class="status-pulse"></span>
-                <span class="tracking-wider uppercase text-[9px] font-mono text-neutral-400">System Status: Optimal</span>
-            </div>
-        </div>
-    </nav>
-
-    <div class="h-28"></div>
-
-    <!-- Hero Section -->
-    <header class="max-w-5xl mx-auto px-6 py-20 text-center relative">
-        <div class="inline-flex items-center gap-2 text-[10px] font-mono tracking-widest border border-[#262626] text-neutral-400 uppercase px-4 py-1.5 rounded-full mb-8 bg-black/40 backdrop-blur-sm">
-            <span class="status-pulse"></span>
-            Abordagem Paramétrica de Alinhamento Arquitetural (MIT + GEIO)
-        </div>
-        
-        <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-8 leading-[0.9] text-white animate-fade-in">
-            O erro operacional <br/>
-            <span class="text-neutral-600">não é falha humana.</span> <br/>
-            <span class="text-blueprint">É falha de arquitetura.</span>
-        </h1>
-        
-        <p class="text-lg md:text-xl text-neutral-400 mb-12 max-w-3xl mx-auto leading-relaxed font-light font-mono">
-            A <span class="text-white font-medium">Incompatibilidade Organizacional</span> está corroendo silenciosamente a margem da sua indústria. Identifique sinais de incompatibilidades sistêmicas, gargalos estruturais e fatores que impactam a estabilidade operacional.
-        </p>
-        
-        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <a href="#combo" class="btn-ignition text-white font-bold py-4 px-8 rounded-lg inline-block">
-                Combo Diagnóstico R$ 497
-            </a>
-            <a href="#varredura" class="btn-ignition text-white font-bold py-4 px-8 rounded-lg inline-block border-blue-900/50 bg-transparent hover:bg-blue-900/20">
-                Varredura Avançada R$ 12.000
-            </a>
-        </div>
-        
-        <div class="grid grid-cols-3 gap-8 text-center">
-            <div>
-                <div class="text-3xl font-bold text-blueprint mb-2 font-mono">8</div>
-                <div class="text-sm text-gray-400 font-mono">ARTEFATOS</div>
-            </div>
-            <div>
-                <div class="text-3xl font-bold text-blueprint mb-2 font-mono">6</div>
-                <div class="text-sm text-gray-400 font-mono">FASES</div>
-            </div>
-            <div>
-                <div class="text-3xl font-bold text-blueprint mb-2 font-mono">2-3</div>
-                <div class="text-sm text-gray-400 font-mono">MESES ROI</div>
-            </div>
+<body>
+    <!-- Header -->
+    <header class="fixed top-0 w-full z-50 glass-panel border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="font-mono font-bold text-blueprint text-lg">GEIO</div>
+            <div class="text-xs font-mono text-neutral-500">DIAGNÓSTICO ESTRUTURAL</div>
         </div>
     </header>
 
-    <!-- Combo Section -->
-    <section id="combo" class="max-w-5xl mx-auto px-6 py-20 relative">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-20 bg-gradient-to-b from-[#0047AB] to-transparent"></div>
-        
-        <h2 class="text-[10px] font-mono text-center text-neutral-500 uppercase tracking-[0.5em] mb-16">Solução Estrutural Imediata</h2>
-        
-        <div class="grid md:grid-cols-2 gap-10">
-            <!-- Combo Card -->
-            <div class="glass-panel p-8 rounded-xl hover:border-blue-900/50 transition-all group">
-                <div class="scanline"></div>
-                <div class="text-[#0047AB] text-[10px] mb-4 font-bold tracking-[0.2em] font-mono">[ARTEFATO 01 — CONFIDENCIAL]</div>
-                <h3 class="text-2xl font-black text-white mb-4 font-mono tracking-tight group-hover:text-blue-400 transition-colors">Combo Diagnóstico</h3>
-                
-                <div class="text-4xl font-bold text-blueprint mb-6 font-mono">R$ 497</div>
-                
-                <ul class="space-y-3 mb-8 text-sm">
-                    <li class="flex items-center gap-3 font-mono text-[10px] uppercase tracking-wider">
-                        <span class="text-blueprint">▸</span>
-                        <span>Matriz Paramétrica GEIO</span>
-                    </li>
-                    <li class="flex items-center gap-3 font-mono text-[10px] uppercase tracking-wider">
-                        <span class="text-blueprint">▸</span>
-                        <span>Cálculo de IIO</span>
-                    </li>
-                    <li class="flex items-center gap-3 font-mono text-[10px] uppercase tracking-wider">
-                        <span class="text-blueprint">▸</span>
-                        <span>Cálculo de CCS</span>
-                    </li>
-                    <li class="flex items-center gap-3 font-mono text-[10px] uppercase tracking-wider">
-                        <span class="text-blueprint">▸</span>
-                        <span>Relatório Executivo</span>
-                    </li>
-                    <li class="flex items-center gap-3 font-mono text-[10px] uppercase tracking-wider">
-                        <span class="text-blueprint">▸</span>
-                        <span>Prioridade Varredura Avançada</span>
-                    </li>
-                </ul>
-                
-                <a href="https://pay.kiwify.com.br/fk2GlyS" target="_blank" class="btn-ignition w-full text-white font-mono font-bold py-4 rounded-lg transition-all uppercase tracking-[0.2em] text-xs shadow-lg">
-                    Adquirir Agora
-                </a>
+    <!-- Hero Section with Urgency -->
+    <section class="min-h-screen flex items-center justify-center px-6 pt-20 pb-20 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute top-20 right-20 w-96 h-96 bg-blue-600 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 left-20 w-96 h-96 bg-red-600 rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="max-w-4xl mx-auto relative z-10 text-center animate-fade-in">
+            <!-- Urgency Badge -->
+            <div class="inline-block mb-6 px-4 py-2 glass-panel rounded-lg border border-alert">
+                <div class="flex items-center gap-2 font-mono text-xs text-alert">
+                    <span class="w-2 h-2 bg-alert rounded-full animate-pulse"></span>
+                    ALERTA: Passivo Invisível em Operação
+                </div>
             </div>
+
+            <!-- Main Headline -->
+            <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
+                <span class="text-white">Sua Margem está</span>
+                <br/>
+                <span class="text-alert">Desaparecendo Silenciosamente</span>
+            </h1>
+
+            <!-- Subheadline - The Problem -->
+            <p class="text-xl text-neutral-300 mb-8 max-w-2xl mx-auto font-mono leading-relaxed">
+                Enquanto você lê isso, seus engenheiros estão perdendo <span class="text-alert font-bold">horas em planilhas paralelas</span>, suas decisões estão <span class="text-alert font-bold">atrasadas</span>, e seus dados estão <span class="text-alert font-bold">espalhados</span>.
+            </p>
+
+            <!-- The Math -->
+            <div class="grid grid-cols-3 gap-4 mb-12 max-w-2xl mx-auto">
+                <div class="glass-panel p-4 rounded-lg border border-gray-800">
+                    <div class="text-2xl font-black text-blueprint counter">8-12h</div>
+                    <div class="text-xs text-neutral-400 font-mono mt-1">Perdidas por semana</div>
+                </div>
+                <div class="glass-panel p-4 rounded-lg border border-gray-800">
+                    <div class="text-2xl font-black text-alert counter">R$ 50-100k</div>
+                    <div class="text-xs text-neutral-400 font-mono mt-1">Erosão mensal</div>
+                </div>
+                <div class="glass-panel p-4 rounded-lg border border-gray-800">
+                    <div class="text-2xl font-black text-blueprint counter">3 Vetores</div>
+                    <div class="text-xs text-neutral-400 font-mono mt-1">De destruição</div>
+                </div>
+            </div>
+
+            <!-- CTA Primary -->
+            <a href="https://kiwify.com.br/geio" target="_blank" class="btn-ignition btn-alert inline-block text-white font-mono font-bold py-4 px-8 rounded-lg transition-all uppercase tracking-[0.2em] text-sm mb-4 pulse-danger">
+                Diagnosticar Agora - R$ 497
+            </a>
+
+            <p class="text-xs text-neutral-500 font-mono">
+                ⏱️ Resultado em 24-48h | 📊 Relatório Executivo | 🎯 Prioridades Claras
+            </p>
+        </div>
+    </section>
+
+    <!-- The Problem: 3 Vectors -->
+    <section class="max-w-6xl mx-auto px-6 py-20 relative">
+        <h2 class="text-4xl font-black text-white mb-16 text-center">
+            Os 3 Vetores do <span class="text-alert">Passivo Invisível</span>
+        </h2>
+
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- Vector 1 -->
+            <div class="glass-panel p-8 rounded-xl border border-gray-800 hover:border-blue-700 transition-all group">
+                <div class="text-4xl mb-4">💰</div>
+                <h3 class="text-xl font-black text-white mb-3 font-mono">Vazamento de Margem</h3>
+                <p class="text-sm text-neutral-400 mb-4">
+                    Planilhas paralelas, silos de informação, conferências manuais. Seus melhores engenheiros passam 40% do tempo em tarefas repetitivas.
+                </p>
+                <div class="text-xs font-mono text-alert font-bold">
+                    Custo: R$ 50-100k/mês
+                </div>
+            </div>
+
+            <!-- Vector 2 -->
+            <div class="glass-panel p-8 rounded-xl border border-gray-800 hover:border-blue-700 transition-all group">
+                <div class="text-4xl mb-4">⚠️</div>
+                <h3 class="text-xl font-black text-white mb-3 font-mono">Passivo Ocupacional</h3>
+                <p class="text-sm text-neutral-400 mb-4">
+                    Sobrecarga cognitiva, exaustão, rotatividade. Seus profissionais qualificados viraram "heróis" compensando falhas sistêmicas.
+                </p>
+                <div class="text-xs font-mono text-alert font-bold">
+                    Risco: NR-17 e NR-1
+                </div>
+            </div>
+
+            <!-- Vector 3 -->
+            <div class="glass-panel p-8 rounded-xl border border-gray-800 hover:border-blue-700 transition-all group">
+                <div class="text-4xl mb-4">🔓</div>
+                <h3 class="text-xl font-black text-white mb-3 font-mono">Vulnerabilidade de Dados</h3>
+                <p class="text-sm text-neutral-400 mb-4">
+                    Informações críticas em canais não estruturados. Conhecimento corporativo disperso. Conformidade LGPD em risco.
+                </p>
+                <div class="text-xs font-mono text-alert font-bold">
+                    Risco: Multas + Reputação
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Axiom -->
+    <section class="max-w-4xl mx-auto px-6 py-20">
+        <div class="glass-panel p-12 rounded-xl border-2 border-alert relative">
+            <div class="absolute -top-4 left-6 bg-black px-3 py-1 text-xs font-mono text-alert font-bold">
+                AXIOMA ARQUITETURAL
+            </div>
+            <p class="text-2xl font-black text-white leading-relaxed font-mono">
+                "Sistemas desorganizados produzem, <span class="text-alert">inevitavelmente</span>, comportamentos desorganizados. Incompatibilidades estruturais não são solucionadas por <span class="text-alert">motivação</span> ou <span class="text-alert">pressão gerencial</span>. A eficiência operacional é consequência direta do <span class="text-alert">design do sistema</span>."
+            </p>
+        </div>
+    </section>
+
+    <!-- What You Get -->
+    <section class="max-w-6xl mx-auto px-6 py-20">
+        <h2 class="text-4xl font-black text-white mb-16 text-center">
+            O Que Você Recebe
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Deliverable 1 -->
+            <div class="glass-panel p-8 rounded-xl border border-gray-800">
+                <div class="text-sm font-mono text-blueprint font-bold mb-2">01</div>
+                <h3 class="text-xl font-black text-white mb-3">Matriz Paramétrica</h3>
+                <p class="text-sm text-neutral-400">
+                    Ferramenta de diagnóstico que mapeia incompatibilidades estruturais com rigor científico baseado em MIT.
+                </p>
+            </div>
+
+            <!-- Deliverable 2 -->
+            <div class="glass-panel p-8 rounded-xl border border-gray-800">
+                <div class="text-sm font-mono text-blueprint font-bold mb-2">02</div>
+                <h3 class="text-xl font-black text-white mb-3">Laudo Estrutural</h3>
+                <p class="text-sm text-neutral-400">
+                    Análise profissional identificando os 3 vetores de destruição de valor específicos da sua operação.
+                </p>
+            </div>
+
+            <!-- Deliverable 3 -->
+            <div class="glass-panel p-8 rounded-xl border border-gray-800">
+                <div class="text-sm font-mono text-blueprint font-bold mb-2">03</div>
+                <h3 class="text-xl font-black text-white mb-3">IIO + CCS</h3>
+                <p class="text-sm text-neutral-400">
+                    Índice de Incompatibilidade Organizacional e Carga Cognitiva Sistêmica. Números que falam.
+                </p>
+            </div>
+
+            <!-- Deliverable 4 -->
+            <div class="glass-panel p-8 rounded-xl border border-gray-800">
+                <div class="text-sm font-mono text-blueprint font-bold mb-2">04</div>
+                <h3 class="text-xl font-black text-white mb-3">Prioridades Claras</h3>
+                <p class="text-sm text-neutral-400">
+                    Roadmap de 90 dias com ações específicas. Você sabe exatamente por onde começar.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Opportunity -->
+    <section class="max-w-4xl mx-auto px-6 py-20 relative">
+        <div class="glass-panel p-12 rounded-xl border border-blue-700">
+            <h2 class="text-3xl font-black text-white mb-6">Por Que Agora?</h2>
             
-            <!-- Varredura Card -->
-            <div class="glass-panel p-8 rounded-xl hover:border-blue-900/50 transition-all group">
-                <div class="scanline"></div>
-                <div class="text-[#0047AB] text-[10px] mb-4 font-bold tracking-[0.2em] font-mono">[CONSULTORIA COMPLETA]</div>
-                <h3 class="text-2xl font-black text-white mb-4 font-mono tracking-tight group-hover:text-blue-400 transition-colors">Varredura Avançada</h3>
-                
-                <div class="text-4xl font-bold text-blueprint mb-6 font-mono">R$ 12.000</div>
-                
-                <ul class="space-y-3 mb-8 text-sm">
-                    <li class="flex items-center gap-3 font-mono text-[10px] uppercase tracking-wider">
-                        <span class="text-blueprint">▸</span>
-                        <span>6 Fases Estruturadas</span>
-                    </li>
-                    <li class="flex items-center gap-3 font-mono text-[10px] uppercase tracking-wider">
-                        <span class="text-blueprint">▸</span>
-                        <span>8 Artefatos GEIO</span>
-                    </li>
-                    <li class="flex items-center gap-3 font-mono text-[10px] uppercase tracking-wider">
-                        <span class="text-blueprint">▸</span>
-                        <span>Diagnóstico Aprofundado</span>
-                    </li>
-                    <li class="flex items-center gap-3 font-mono text-[10px] uppercase tracking-wider">
-                        <span class="text-blueprint">▸</span>
-                        <span>Plano de Ação</span>
-                    </li>
-                    <li class="flex items-center gap-3 font-mono text-[10px] uppercase tracking-wider">
-                        <span class="text-blueprint">▸</span>
-                        <span>Implementação Supervisionada</span>
-                    </li>
-                </ul>
-                
-                <a href="https://wa.me/5534996365898?text=Olá,%20tenho%20interesse%20na%20Varredura%20Avançada%20GEIO" target="_blank" class="btn-ignition w-full text-white font-mono font-bold py-4 rounded-lg transition-all uppercase tracking-[0.2em] text-xs shadow-lg">
-                    Agendar Consultoria
-                </a>
+            <div class="space-y-4 mb-8">
+                <div class="flex gap-4">
+                    <span class="text-blueprint font-bold text-xl flex-shrink-0">⚡</span>
+                    <div>
+                        <p class="font-bold text-white mb-1">Cada dia que passa = Mais margem perdida</p>
+                        <p class="text-sm text-neutral-400">O problema é silencioso. Mas está destruindo valor todos os dias.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <span class="text-blueprint font-bold text-xl flex-shrink-0">🎯</span>
+                    <div>
+                        <p class="font-bold text-white mb-1">Seus concorrentes podem estar se organizando</p>
+                        <p class="text-sm text-neutral-400">Vantagem competitiva = melhor arquitetura. Você quer ficar para trás?</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <span class="text-blueprint font-bold text-xl flex-shrink-0">📊</span>
+                    <div>
+                        <p class="font-bold text-white mb-1">Diagnóstico = Ação Imediata</p>
+                        <p class="text-sm text-neutral-400">Não é consultoria cara. É diagnóstico rápido com ROI claro.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <span class="text-blueprint font-bold text-xl flex-shrink-0">🚀</span>
+                    <div>
+                        <p class="font-bold text-white mb-1">Prioridade para Varredura Avançada</p>
+                        <p class="text-sm text-neutral-400">Clientes do Combo têm acesso prioritário à consultoria completa.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- ROI Section -->
-    <section id="varredura" class="max-w-5xl mx-auto px-6 py-20 relative">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-20 bg-gradient-to-b from-[#0047AB] to-transparent"></div>
-        
-        <h2 class="text-[10px] font-mono text-center text-neutral-500 uppercase tracking-[0.5em] mb-16">Retorno Esperado</h2>
-        
-        <div class="glass-panel p-8 rounded-xl mb-8">
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="border-l-4 border-blueprint pl-6">
-                    <div class="text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-2">Redução de Retrabalho</div>
-                    <div class="text-3xl font-bold text-blueprint font-mono">20-30%</div>
-                </div>
-                <div class="border-l-4 border-blueprint pl-6">
-                    <div class="text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-2">Redução de Desperdício</div>
-                    <div class="text-3xl font-bold text-blueprint font-mono">15-25%</div>
-                </div>
-                <div class="border-l-4 border-blueprint pl-6">
-                    <div class="text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-2">Redução de Horas Extras</div>
-                    <div class="text-3xl font-bold text-blueprint font-mono">30-40%</div>
-                </div>
+    <!-- Pricing & CTA -->
+    <section class="max-w-4xl mx-auto px-6 py-20">
+        <div class="glass-panel p-12 rounded-xl border-2 border-blueprint text-center">
+            <div class="mb-6">
+                <div class="text-sm font-mono text-blueprint font-bold mb-2">INVESTIMENTO</div>
+                <div class="text-5xl font-black text-white mb-2">R$ 497</div>
+                <div class="text-sm text-neutral-400 font-mono">vs. R$ 50-100k de margem perdida por mês</div>
             </div>
+
+            <p class="text-sm text-neutral-400 mb-8 max-w-2xl mx-auto">
+                Você investe R$ 497 para diagnosticar um problema que está custando R$ 50-100k por mês. A matemática é simples.
+            </p>
+
+            <a href="https://kiwify.com.br/geio" target="_blank" class="btn-ignition btn-alert inline-block text-white font-mono font-bold py-4 px-8 rounded-lg transition-all uppercase tracking-[0.2em] text-sm mb-6 pulse-danger">
+                Diagnosticar Agora
+            </a>
+
+            <p class="text-xs text-neutral-500 font-mono">
+                ✓ Resultado em 24-48h | ✓ Sem compromisso futuro | ✓ Prioridade para Varredura Avançada
+            </p>
         </div>
-        
-        <div class="glass-panel p-8 rounded-xl">
-            <div class="text-center">
-                <div class="text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-4">Economia Mensal Esperada</div>
-                <div class="text-5xl font-bold text-blueprint font-mono mb-4">R$ 50-100k</div>
-                <div class="text-[10px] font-mono uppercase tracking-widest text-neutral-500">Payback em 2-3 meses</div>
+    </section>
+
+    <!-- Social Proof -->
+    <section class="max-w-6xl mx-auto px-6 py-20">
+        <h2 class="text-3xl font-black text-white mb-12 text-center">
+            Já Diagnosticamos
+        </h2>
+
+        <div class="grid md:grid-cols-3 gap-6 text-center">
+            <div class="glass-panel p-8 rounded-xl border border-gray-800">
+                <div class="text-4xl font-black text-blueprint mb-2">5+</div>
+                <p class="text-sm text-neutral-400">Organizações Analisadas</p>
+            </div>
+            <div class="glass-panel p-8 rounded-xl border border-gray-800">
+                <div class="text-4xl font-black text-blueprint mb-2">R$ 2M+</div>
+                <p class="text-sm text-neutral-400">Em Oportunidades Identificadas</p>
+            </div>
+            <div class="glass-panel p-8 rounded-xl border border-gray-800">
+                <div class="text-4xl font-black text-blueprint mb-2">100%</div>
+                <p class="text-sm text-neutral-400">Recomendaram Varredura Avançada</p>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="max-w-5xl mx-auto px-6 py-20 text-center relative">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-20 bg-gradient-to-b from-[#0047AB] to-transparent"></div>
-        
-        <h2 class="text-[10px] font-mono text-neutral-500 uppercase tracking-[0.5em] mb-8">Próximos Passos</h2>
-        
-        <p class="text-xl text-neutral-400 mb-12 max-w-2xl mx-auto font-mono">
-            Escolha seu caminho para a Ordem Inevitável
+    <!-- Footer CTA -->
+    <section class="max-w-4xl mx-auto px-6 py-20 text-center">
+        <p class="text-neutral-400 mb-6 font-mono">
+            Pronto para descobrir quanto você está perdendo?
         </p>
-        
-        <div class="flex flex-col sm:flex-row gap-6 justify-center">
-            <a href="https://pay.kiwify.com.br/fk2GlyS" target="_blank" class="btn-ignition text-white font-mono font-bold py-5 px-10 rounded-lg transition-all uppercase tracking-[0.2em] text-xs shadow-xl">
-                Combo R$ 497 →
-            </a>
-            <a href="https://wa.me/5534996365898?text=Olá,%20gostaria%20de%20agendar%20a%20Varredura%20Avançada" target="_blank" class="btn-ignition text-white font-mono font-bold py-5 px-10 rounded-lg transition-all uppercase tracking-[0.2em] text-xs shadow-xl border-blue-900/50 bg-transparent hover:bg-blue-900/20">
-                Varredura R$ 12.000 →
-            </a>
-        </div>
+        <a href="https://kiwify.com.br/geio" target="_blank" class="btn-ignition btn-alert inline-block text-white font-mono font-bold py-4 px-8 rounded-lg transition-all uppercase tracking-[0.2em] text-sm pulse-danger">
+            Começar Diagnóstico
+        </a>
     </section>
 
     <!-- Footer -->
-    <footer class="border-t border-[#262626] py-12 px-6 text-center text-neutral-500 text-[10px] font-mono uppercase tracking-widest">
-        <p class="mb-4">© 2026 GEIO GESTÃO INTELIGENTE | CNPJ 60.525.751/0001-53</p>
-        <p class="mb-4">Daiane Gondim — Arquiteta-Chefe</p>
-        <p>
-            <a href="mailto:daianegondim@unipam.edu.br" class="hover:text-blueprint transition">daianegondim@unipam.edu.br</a> | 
-            <a href="https://wa.me/5534996365898" class="hover:text-blueprint transition">34 996365898</a>
-        </p>
+    <footer class="border-t border-gray-800 mt-20 py-12">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <p class="text-xs text-neutral-500 font-mono mb-4">
+                © 2026 GEIO GESTÃO INTELIGENTE | CNPJ 60.525.751/0001-53
+            </p>
+            <div class="flex justify-center gap-4 text-xs text-neutral-500 font-mono">
+                <a href="https://wa.me/5534996365898" target="_blank" class="hover:text-blueprint transition">WhatsApp</a>
+                <span>•</span>
+                <a href="mailto:daianegondim@unipam.edu.br" class="hover:text-blueprint transition">Email</a>
+                <span>•</span>
+                <span>Daiane Gondim - Arquiteta-Chefe</span>
+            </div>
+        </div>
     </footer>
 
     <script>
-        // Canvas Background Animation
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        
-        let particles = [];
-        
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.size = Math.random() * 2;
-                this.opacity = Math.random() * 0.5;
-            }
-            
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                
-                if (this.x < 0) this.x = canvas.width;
-                if (this.x > canvas.width) this.x = 0;
-                if (this.y < 0) this.y = canvas.height;
-                if (this.y > canvas.height) this.y = 0;
-            }
-            
-            draw() {
-                ctx.fillStyle = `rgba(0, 71, 169, ${this.opacity})`;
-                ctx.fillRect(this.x, this.y, this.size, this.size);
-            }
-        }
-        
-        for (let i = 0; i < 50; i++) {
-            particles.push(new Particle());
-        }
-        
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            particles.forEach(p => {
-                p.update();
-                p.draw();
+        // Smooth scroll for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
             });
-            
-            requestAnimationFrame(animate);
+        });
+
+        // Counter animation
+        function animateCounter(element) {
+            const target = parseInt(element.textContent);
+            let current = 0;
+            const increment = Math.ceil(target / 50);
+            const interval = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target;
+                    clearInterval(interval);
+                } else {
+                    element.textContent = current;
+                }
+            }, 30);
         }
-        
-        animate();
-        
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+
+        // Trigger counter animation on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counters = entry.target.querySelectorAll('.counter');
+                    counters.forEach(counter => animateCounter(counter));
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+
+        document.querySelectorAll('[class*="counter"]').forEach(el => {
+            observer.observe(el.closest('[class*="grid"]') || el);
         });
     </script>
 </body>
