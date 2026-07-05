@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GEIO Diagnóstico | Identifique o Passivo Invisível Destruindo Sua Margem</title>
+    <title>GEIO | Gestão Inteligente Operacional & Engenharia de Processos</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Inter:wght@300;400;700;900&display=swap');
         
@@ -14,34 +14,32 @@
             --red-alert: #EF4444;
             --black-abs: #050505;
             --gray-border: #262626;
-            --gray-text: #D4D4D4;
         }
 
-        * { font-family: 'Inter', sans-serif; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
         html { scroll-behavior: smooth; }
         
         body {
             background-color: var(--black-abs);
-            color: var(--gray-text);
+            color: #D4D4D4;
+            font-family: 'Inter', sans-serif;
             overflow-x: hidden;
         }
 
-        #canvas-bg {
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Background Canvas Layer */
+        #bg-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1;
+            z-index: -1;
+            opacity: 0.4;
             pointer-events: none;
         }
 
-        .content-wrapper {
-            position: relative;
-            z-index: 10;
-        }
-
+        /* Glassmorphism / Brushed Metal Effect */
         .glass-panel {
             background: rgba(10, 10, 10, 0.7);
             backdrop-filter: blur(12px);
@@ -50,19 +48,48 @@
             box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02);
         }
 
+        .glass-input {
+            background: rgba(0, 0, 0, 0.6) !important;
+            border: 1px solid var(--gray-border) !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-input:focus {
+            border-color: var(--blue-blueprint) !important;
+            box-shadow: 0 0 15px rgba(0, 71, 169, 0.3);
+            background: rgba(0, 71, 169, 0.05) !important;
+        }
+
+        /* Ignition Buttons */
         .btn-ignition {
             position: relative;
             overflow: hidden;
             transition: all 0.3s ease;
             border: 1px solid rgba(0, 71, 169, 0.5);
             background: linear-gradient(180deg, rgba(0, 71, 169, 0.8) 0%, rgba(0, 40, 100, 1) 100%);
-            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .btn-ignition::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
         }
 
         .btn-ignition:hover {
-            box-shadow: 0 0 30px rgba(0, 71, 169, 0.6), 0 0 60px rgba(239, 68, 68, 0.2);
-            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(0, 71, 169, 0.6);
+            transform: translateY(-1px);
             border-color: #0066FF;
+        }
+
+        .btn-ignition:hover::before {
+            opacity: 1;
         }
 
         .btn-ignition:active {
@@ -70,553 +97,457 @@
             box-shadow: 0 0 10px rgba(0, 71, 169, 0.8);
         }
 
-        .btn-alert {
-            background: linear-gradient(180deg, rgba(239, 68, 68, 0.8) 0%, rgba(180, 40, 40, 1) 100%);
-            border: 1px solid rgba(239, 68, 68, 0.5);
+        /* Scanline Effect */
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 10;
+            background: linear-gradient(0deg, rgba(0, 71, 169, 0) 0%, rgba(0, 71, 169, 0.05) 50%, rgba(0, 71, 169, 0) 100%);
+            opacity: 0.1;
+            position: absolute;
+            bottom: 100%;
+            animation: scanline 8s linear infinite;
+            pointer-events: none;
         }
 
-        .btn-alert:hover {
-            box-shadow: 0 0 30px rgba(239, 68, 68, 0.6);
-            border-color: #FF6666;
+        @keyframes scanline {
+            0% { bottom: 100%; }
+            100% { bottom: -100px; }
         }
 
-        .text-blueprint { color: var(--blue-blueprint); }
-        .text-alert { color: var(--red-alert); }
-        .border-blueprint { border-color: var(--blue-blueprint); }
-        .border-alert { border-color: var(--red-alert); }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #262626; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #404040; }
 
-        .counter {
-            font-variant-numeric: tabular-nums;
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .animate-fade-in {
-            animation: fadeInUp 0.6s ease-out;
-        }
-
-        @keyframes pulse-danger {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-            50% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
-        }
-
-        .pulse-danger {
-            animation: pulse-danger 2s infinite;
-        }
-
-        .calculator-section {
-            background: linear-gradient(135deg, rgba(0, 71, 169, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%);
-            border: 2px solid var(--blue-blueprint);
-        }
-
-        .input-field {
-            background: rgba(10, 10, 10, 0.9);
-            border: 1px solid var(--gray-border);
-            color: var(--gray-text);
-            padding: 12px 16px;
-            border-radius: 8px;
-            font-family: 'JetBrains Mono', monospace;
-            transition: all 0.3s ease;
-        }
-
-        .input-field:focus {
-            outline: none;
-            border-color: var(--blue-blueprint);
-            box-shadow: 0 0 20px rgba(0, 71, 169, 0.3);
-        }
-
-        .result-box {
-            background: rgba(239, 68, 68, 0.1);
-            border: 2px solid var(--red-alert);
-            padding: 16px;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        .result-value {
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: var(--red-alert);
-            font-family: 'JetBrains Mono', monospace;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
         }
     </style>
 </head>
-<body>
-    <canvas id="canvas-bg"></canvas>
+<body class="selection:bg-blue-900 selection:text-white antialiased">
 
-    <div class="content-wrapper">
-        <!-- Header -->
-        <header class="fixed top-0 w-full z-50 glass-panel border-b border-gray-800">
-            <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-                <div class="font-mono font-bold text-blueprint text-lg">GEIO</div>
-                <div class="text-xs font-mono text-neutral-500">DIAGNÓSTICO ESTRUTURAL</div>
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="w-full bg-black/80 backdrop-blur-md border-b border-[#262626] py-4 px-6 fixed top-0 left-0 z-50 font-mono">
+        <div class="max-w-5xl mx-auto flex justify-between items-center">
+            <a href="/" class="flex items-center space-x-3 group">
+                <div class="relative">
+                    <!-- GEIO Logo (Official) -->
+                    <svg class="w-8 h-8 transition-transform duration-500 group-hover:rotate-90" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H75V25H100V100H0V0ZM25 25H75V75H25V25Z" fill="#D4D4D4"/>
+                        <rect x="75" y="0" width="25" height="25" fill="#0047AB"/>
+                    </svg>
+                    <div class="absolute inset-0 bg-blue-600 blur-lg opacity-0 group-hover:opacity-40 transition-opacity"></div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xl font-black tracking-[0.25em] text-white leading-none">GEIO</span>
+                    <span class="text-[8px] text-neutral-500 tracking-widest uppercase mt-0.5">Core Engine v1.6.0</span>
+                </div>
+            </a>
+            <div class="flex items-center space-x-3 px-3 py-1.5 border border-[#262626] rounded-md bg-black/50">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#0047AB] animate-pulse shadow-[0_0_8px_#0047AB]"></span>
+                <span class="tracking-wider uppercase text-[9px] font-mono text-neutral-400">System Status: Optimal</span>
             </div>
-        </header>
+        </div>
+    </nav>
 
-        <!-- Hero Section -->
-        <section class="min-h-screen flex items-center justify-center px-6 pt-20 pb-20">
-            <div class="max-w-4xl mx-auto text-center animate-fade-in">
-                <div class="inline-block mb-6 px-4 py-2 glass-panel rounded-lg border border-alert">
-                    <div class="flex items-center gap-2 font-mono text-xs text-alert">
-                        <span class="w-2 h-2 bg-alert rounded-full animate-pulse"></span>
-                        ALERTA: Passivo Invisível em Operação
-                    </div>
-                </div>
+    <div class="h-28"></div>
 
-                <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
-                    <span class="text-white">Sua Margem está</span>
-                    <br/>
-                    <span class="text-alert">Desaparecendo Silenciosamente</span>
-                </h1>
+    <!-- Hero Section -->
+    <header class="max-w-5xl mx-auto px-6 py-12 text-center relative">
+        <div class="inline-flex items-center gap-2 text-[10px] font-mono tracking-widest border border-[#262626] text-neutral-400 uppercase px-4 py-1.5 rounded-full mb-8 bg-black/40 backdrop-blur-sm">
+            <span class="w-1 h-1 bg-blue-500 rounded-full animate-ping"></span>
+            Abordagem Paramétrica de Alinhamento Arquitetural (MIT + GEIO)
+        </div>
+        <h1 class="text-4xl md:text-7xl font-black tracking-tighter mb-8 leading-[0.9] text-white">
+            O erro operacional não é falha humana. <br/>
+            <span class="text-neutral-600">É falha de arquitetura.</span>
+        </h1>
+        <p class="text-lg md:text-xl text-neutral-400 mb-10 max-w-3xl mx-auto leading-relaxed font-light">
+            A <span class="text-white font-medium">Incompatibilidade Organizacional</span> está a corroer silenciosamente a margem da sua indústria. Insira os dados operacionais abaixo e visualize graficamente o impacto real do atrito e do Shadow IT.
+        </p>
+    </header>
 
-                <p class="text-xl text-neutral-300 mb-8 max-w-2xl mx-auto font-mono leading-relaxed">
-                    Enquanto você lê isso, seus engenheiros estão perdendo <span class="text-alert font-bold">horas em planilhas paralelas</span>, suas decisões estão <span class="text-alert font-bold">atrasadas</span>, e seus dados estão <span class="text-alert font-bold">espalhados</span>.
-                </p>
-
-                <div class="grid grid-cols-3 gap-4 mb-12 max-w-2xl mx-auto">
-                    <div class="glass-panel p-4 rounded-lg border border-gray-800">
-                        <div class="text-2xl font-black text-blueprint counter">8-12h</div>
-                        <div class="text-xs text-neutral-400 font-mono mt-1">Perdidas por semana</div>
-                    </div>
-                    <div class="glass-panel p-4 rounded-lg border border-gray-800">
-                        <div class="text-2xl font-black text-alert counter">R$ 50-100k</div>
-                        <div class="text-xs text-neutral-400 font-mono mt-1">Erosão mensal</div>
-                    </div>
-                    <div class="glass-panel p-4 rounded-lg border border-gray-800">
-                        <div class="text-2xl font-black text-blueprint counter">3 Vetores</div>
-                        <div class="text-xs text-neutral-400 font-mono mt-1">De destruição</div>
-                    </div>
-                </div>
-
-                <a href="https://kiwify.com.br/geio" target="_blank" class="btn-ignition btn-alert inline-block text-white font-mono font-bold py-4 px-8 rounded-lg transition-all uppercase tracking-[0.2em] text-sm mb-4 pulse-danger">
-                    Diagnosticar Agora - R$ 497
-                </a>
-
-                <p class="text-xs text-neutral-500 font-mono">
-                    ⏱️ Resultado em 24-48h | 📊 Relatório Executivo | 🎯 Prioridades Claras
-                </p>
-            </div>
-        </section>
-
-        <!-- Calculator Section - FREE -->
-        <section class="max-w-6xl mx-auto px-6 py-20">
-            <div class="text-center mb-12">
-                <div class="inline-block px-4 py-2 glass-panel rounded-lg border border-blueprint mb-4">
-                    <div class="text-xs font-mono text-blueprint font-bold">🎁 FERRAMENTA GRATUITA</div>
-                </div>
-                <h2 class="text-4xl font-black text-white mb-4">
-                    Calcule Seu <span class="text-alert">Passivo Invisível</span>
+    <!-- Calculator Section -->
+    <main id="calculadora" class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 px-6 mb-20 relative">
+        <!-- Input Panel -->
+        <div class="glass-panel p-8 rounded-xl shadow-2xl flex flex-col justify-between relative overflow-hidden group">
+            <div class="scanline"></div>
+            <div>
+                <h2 class="text-xs font-mono uppercase tracking-[0.2em] mb-8 text-neutral-300 border-b border-[#262626] pb-4 flex items-center justify-between">
+                    <span><span class="text-[#0047AB] font-bold">[01]</span> Mapeamento de Atrito</span>
+                    <span class="text-[9px] text-neutral-600">SECURE_CHANNEL_v4</span>
                 </h2>
-                <p class="text-neutral-400 max-w-2xl mx-auto">
-                    Use nossa calculadora para estimar o impacto financeiro do passivo invisível na sua operação. Sem cadastro, sem email, totalmente gratuito.
-                </p>
-            </div>
-
-            <div class="calculator-section p-12 rounded-xl">
-                <div class="grid md:grid-cols-2 gap-12">
-                    <!-- Inputs -->
-                    <div class="space-y-6">
-                        <div>
-                            <label class="block text-sm font-mono text-neutral-400 mb-2">
-                                Quantos engenheiros/analistas na operação?
-                            </label>
-                            <input type="number" id="engineers" class="input-field w-full" value="10" min="1">
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-mono text-neutral-400 mb-2">
-                                Horas perdidas por semana (por pessoa)?
-                            </label>
-                            <input type="number" id="hoursLost" class="input-field w-full" value="8" min="0" max="40" step="0.5">
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-mono text-neutral-400 mb-2">
-                                Custo médio da hora técnica (R$)?
-                            </label>
-                            <input type="number" id="hourCost" class="input-field w-full" value="150" min="1">
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-mono text-neutral-400 mb-2">
-                                Semanas por ano em operação?
-                            </label>
-                            <input type="number" id="weeksPerYear" class="input-field w-full" value="48" min="1" max="52">
-                        </div>
+                
+                <div class="space-y-8">
+                    <div class="relative">
+                        <label class="block text-[10px] font-mono uppercase text-neutral-500 mb-3 tracking-widest">Engenheiros/Analistas na Operação:</label>
+                        <input type="number" id="pessoas" class="glass-input w-full bg-transparent rounded-lg p-4 text-white focus:outline-none font-mono text-lg" value="3" min="1">
+                    </div>
+                    
+                    <div class="relative">
+                        <label class="block text-[10px] font-mono uppercase text-neutral-500 mb-3 tracking-widest">Horas Perdidas por Pessoa/Semana:</label>
+                        <input type="number" id="horas" class="glass-input w-full bg-transparent rounded-lg p-4 text-white focus:outline-none font-mono text-lg" value="12" min="1">
                     </div>
 
-                    <!-- Results -->
-                    <div class="space-y-6">
-                        <div class="result-box">
-                            <div class="text-xs font-mono text-neutral-500 mb-2">EROSÃO SEMANAL</div>
-                            <div class="result-value" id="weeklyErosion">R$ 12.000</div>
-                        </div>
-
-                        <div class="result-box">
-                            <div class="text-xs font-mono text-neutral-500 mb-2">EROSÃO MENSAL</div>
-                            <div class="result-value" id="monthlyErosion">R$ 48.000</div>
-                        </div>
-
-                        <div class="result-box">
-                            <div class="text-xs font-mono text-neutral-500 mb-2">EROSÃO ANUAL</div>
-                            <div class="result-value" id="annualErosion">R$ 576.000</div>
-                        </div>
-
-                        <div class="glass-panel p-4 rounded-lg border border-blueprint text-center">
-                            <p class="text-xs text-neutral-400 font-mono mb-3">
-                                Seu diagnóstico custaria apenas
-                            </p>
-                            <p class="text-2xl font-black text-blueprint">R$ 497</p>
-                            <p class="text-xs text-neutral-500 font-mono mt-2">
-                                Retorno em <span class="text-blueprint font-bold" id="roiDays">1 dia</span>
-                            </p>
-                        </div>
+                    <div class="relative">
+                        <label class="block text-[10px] font-mono uppercase text-neutral-500 mb-3 tracking-widest">Custo Médio da Hora Técnica (R$):</label>
+                        <input type="number" id="custo" class="glass-input w-full bg-transparent rounded-lg p-4 text-white focus:outline-none font-mono text-lg" value="50" min="10">
                     </div>
                 </div>
+            </div>
 
-                <div class="mt-12 text-center">
-                    <p class="text-sm text-neutral-400 mb-6 font-mono">
-                        Estes números te assustaram? Então você precisa do diagnóstico.
+            <div class="mt-12">
+                <button onclick="calcularErosao()" class="btn-ignition w-full text-white font-mono font-bold py-5 rounded-lg transition-all uppercase tracking-[0.2em] text-xs shadow-lg">
+                    Executar Análise Gráfica
+                </button>
+                <div class="flex items-center justify-center gap-2 mt-4 opacity-50">
+                    <svg class="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    <p class="text-[9px] text-neutral-500 font-mono uppercase tracking-tighter">Protocolo de Privacidade Client-Side Ativo</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Output Panel -->
+        <div class="glass-panel p-8 rounded-xl flex flex-col justify-center items-center text-center min-h-[450px] border-dashed border-neutral-800">
+            
+            <div id="estado-inicial" class="text-neutral-600 font-mono text-[10px] space-y-4">
+                <div class="relative w-16 h-16 mx-auto mb-4">
+                    <div class="absolute inset-0 border-2 border-neutral-800 rounded-full border-t-blue-900 animate-spin"></div>
+                    <svg class="w-8 h-8 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                </div>
+                <p class="uppercase tracking-[0.3em]">Aguardando submissão de parâmetros...</p>
+            </div>
+
+            <div id="resultado-grafico" class="hidden w-full space-y-8 animate-[fadeIn_0.5s_ease-out]">
+                <div class="text-center">
+                    <div class="flex items-center justify-center gap-2 mb-2">
+                        <span class="flex h-2 w-2 relative">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                        </span>
+                        <h3 class="text-red-500 text-[10px] font-mono uppercase tracking-[0.3em] font-bold">
+                            Erosão Financeira Detectada
+                        </h3>
+                    </div>
+                    <p class="text-[10px] text-neutral-500 font-mono uppercase tracking-widest">Vazamento de capital acumulado por falha analítica</p>
+                </div>
+                
+                <div class="w-full h-64 bg-black/40 border border-[#262626] p-6 rounded-xl relative group">
+                    <div class="absolute top-2 right-4 text-[8px] font-mono text-neutral-700">TERMINAL_FEED_0x4F</div>
+                    <canvas id="lossChart"></canvas>
+                </div>
+
+                <div class="bg-red-950/10 border border-red-900/30 p-5 rounded-lg text-left font-mono relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-red-600"></div>
+                    <p class="text-xs text-neutral-400 leading-relaxed">
+                        Sua operação descarta aproximadamente <br>
+                        <strong class="text-red-500 text-2xl font-sans font-black tracking-tighter" id="valor-anual">R$ 0,00</strong> <br>
+                        <span class="text-[9px] uppercase tracking-widest">por ano sustentando retrabalhos e silos.</span>
                     </p>
-                    <a href="https://kiwify.com.br/geio" target="_blank" class="btn-ignition btn-alert inline-block text-white font-mono font-bold py-4 px-8 rounded-lg transition-all uppercase tracking-[0.2em] text-sm pulse-danger">
-                        Diagnosticar Agora - R$ 497
+                </div>
+
+                <div class="pt-2">
+                    <a href="https://pay.kiwify.com.br/fk2GlyS" target="_blank" class="btn-ignition block w-full text-white font-mono font-bold text-xs py-5 rounded-lg transition-all uppercase tracking-[0.2em] shadow-[0_0_30px_rgba(0,71,169,0.4)]">
+                        Estancar Perda Operacional
                     </a>
                 </div>
             </div>
-        </section>
+        </div>
+    </main>
 
-        <!-- The Problem: 3 Vectors -->
-        <section class="max-w-6xl mx-auto px-6 py-20">
-            <h2 class="text-4xl font-black text-white mb-16 text-center">
-                Os 3 Vetores do <span class="text-alert">Passivo Invisível</span>
-            </h2>
-
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="glass-panel p-8 rounded-xl border border-gray-800 hover:border-blue-700 transition-all">
-                    <div class="text-4xl mb-4">💰</div>
-                    <h3 class="text-xl font-black text-white mb-3 font-mono">Vazamento de Margem</h3>
-                    <p class="text-sm text-neutral-400 mb-4">
-                        Planilhas paralelas, silos de informação, conferências manuais. Seus melhores engenheiros passam 40% do tempo em tarefas repetitivas.
-                    </p>
-                    <div class="text-xs font-mono text-alert font-bold">
-                        Custo: R$ 50-100k/mês
-                    </div>
-                </div>
-
-                <div class="glass-panel p-8 rounded-xl border border-gray-800 hover:border-blue-700 transition-all">
-                    <div class="text-4xl mb-4">⚠️</div>
-                    <h3 class="text-xl font-black text-white mb-3 font-mono">Passivo Ocupacional</h3>
-                    <p class="text-sm text-neutral-400 mb-4">
-                        Sobrecarga cognitiva, exaustão, rotatividade. Seus profissionais qualificados viraram "heróis" compensando falhas sistêmicas.
-                    </p>
-                    <div class="text-xs font-mono text-alert font-bold">
-                        Risco: NR-17 e NR-1
-                    </div>
-                </div>
-
-                <div class="glass-panel p-8 rounded-xl border border-gray-800 hover:border-blue-700 transition-all">
-                    <div class="text-4xl mb-4">🔓</div>
-                    <h3 class="text-xl font-black text-white mb-3 font-mono">Vulnerabilidade de Dados</h3>
-                    <p class="text-sm text-neutral-400 mb-4">
-                        Informações críticas em canais não estruturados. Conhecimento corporativo disperso. Conformidade LGPD em risco.
-                    </p>
-                    <div class="text-xs font-mono text-alert font-bold">
-                        Risco: Multas + Reputação
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- The Axiom -->
-        <section class="max-w-4xl mx-auto px-6 py-20">
-            <div class="glass-panel p-12 rounded-xl border-2 border-alert">
-                <div class="absolute -top-4 left-6 bg-black px-3 py-1 text-xs font-mono text-alert font-bold">
-                    AXIOMA ARQUITETURAL
-                </div>
-                <p class="text-2xl font-black text-white leading-relaxed font-mono">
-                    "Sistemas desorganizados produzem, <span class="text-alert">inevitavelmente</span>, comportamentos desorganizados. Incompatibilidades estruturais não são solucionadas por <span class="text-alert">motivação</span> ou <span class="text-alert">pressão gerencial</span>. A eficiência operacional é consequência direta do <span class="text-alert">design do sistema</span>."
-                </p>
-            </div>
-        </section>
-
-        <!-- What You Get -->
-        <section class="max-w-6xl mx-auto px-6 py-20">
-            <h2 class="text-4xl font-black text-white mb-16 text-center">
-                O Que Você Recebe
-            </h2>
-
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="glass-panel p-8 rounded-xl border border-gray-800">
-                    <div class="text-sm font-mono text-blueprint font-bold mb-2">01</div>
-                    <h3 class="text-xl font-black text-white mb-3">Matriz Paramétrica</h3>
-                    <p class="text-sm text-neutral-400">
-                        Ferramenta de diagnóstico que mapeia incompatibilidades estruturais com rigor científico baseado em MIT.
-                    </p>
-                </div>
-
-                <div class="glass-panel p-8 rounded-xl border border-gray-800">
-                    <div class="text-sm font-mono text-blueprint font-bold mb-2">02</div>
-                    <h3 class="text-xl font-black text-white mb-3">Laudo Estrutural</h3>
-                    <p class="text-sm text-neutral-400">
-                        Análise profissional identificando os 3 vetores de destruição de valor específicos da sua operação.
-                    </p>
-                </div>
-
-                <div class="glass-panel p-8 rounded-xl border border-gray-800">
-                    <div class="text-sm font-mono text-blueprint font-bold mb-2">03</div>
-                    <h3 class="text-xl font-black text-white mb-3">IIO + CCS</h3>
-                    <p class="text-sm text-neutral-400">
-                        Índice de Incompatibilidade Organizacional e Carga Cognitiva Sistêmica. Números que falam.
-                    </p>
-                </div>
-
-                <div class="glass-panel p-8 rounded-xl border border-gray-800">
-                    <div class="text-sm font-mono text-blueprint font-bold mb-2">04</div>
-                    <h3 class="text-xl font-black text-white mb-3">Prioridades Claras</h3>
-                    <p class="text-sm text-neutral-400">
-                        Roadmap de 90 dias com ações específicas. Você sabe exatamente por onde começar.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Pricing & CTA -->
-        <section class="max-w-4xl mx-auto px-6 py-20">
-            <div class="glass-panel p-12 rounded-xl border-2 border-blueprint text-center">
-                <div class="mb-6">
-                    <div class="text-sm font-mono text-blueprint font-bold mb-2">INVESTIMENTO</div>
-                    <div class="text-5xl font-black text-white mb-2">R$ 497</div>
-                    <div class="text-sm text-neutral-400 font-mono">vs. R$ 50-100k de margem perdida por mês</div>
-                </div>
-
-                <p class="text-sm text-neutral-400 mb-8 max-w-2xl mx-auto">
-                    Você investe R$ 497 para diagnosticar um problema que está custando R$ 50-100k por mês. A matemática é simples.
-                </p>
-
-                <a href="https://kiwify.com.br/geio" target="_blank" class="btn-ignition btn-alert inline-block text-white font-mono font-bold py-4 px-8 rounded-lg transition-all uppercase tracking-[0.2em] text-sm mb-6 pulse-danger">
-                    Diagnosticar Agora
-                </a>
-
-                <p class="text-xs text-neutral-500 font-mono">
-                    ✓ Resultado em 24-48h | ✓ Sem compromisso futuro | ✓ Prioridade para Varredura Avançada
-                </p>
-            </div>
-        </section>
-
-        <!-- Social Proof -->
-        <section class="max-w-6xl mx-auto px-6 py-20">
-            <h2 class="text-3xl font-black text-white mb-12 text-center">
-                Já Diagnosticamos
-            </h2>
-
-            <div class="grid md:grid-cols-3 gap-6 text-center">
-                <div class="glass-panel p-8 rounded-xl border border-gray-800">
-                    <div class="text-4xl font-black text-blueprint mb-2">5+</div>
-                    <p class="text-sm text-neutral-400">Organizações Analisadas</p>
-                </div>
-                <div class="glass-panel p-8 rounded-xl border border-gray-800">
-                    <div class="text-4xl font-black text-blueprint mb-2">R$ 2M+</div>
-                    <p class="text-sm text-neutral-400">Em Oportunidades Identificadas</p>
-                </div>
-                <div class="glass-panel p-8 rounded-xl border border-gray-800">
-                    <div class="text-4xl font-black text-blueprint mb-2">100%</div>
-                    <p class="text-sm text-neutral-400">Recomendaram Varredura Avançada</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer CTA -->
-        <section class="max-w-4xl mx-auto px-6 py-20 text-center">
-            <p class="text-neutral-400 mb-6 font-mono">
-                Pronto para descobrir quanto você está perdendo?
-            </p>
-            <a href="https://kiwify.com.br/geio" target="_blank" class="btn-ignition btn-alert inline-block text-white font-mono font-bold py-4 px-8 rounded-lg transition-all uppercase tracking-[0.2em] text-sm pulse-danger">
-                Começar Diagnóstico
-            </a>
-        </section>
-
-        <!-- Footer -->
-        <footer class="border-t border-gray-800 mt-20 py-16 bg-black/50">
-            <div class="max-w-6xl mx-auto px-6">
-                <div class="grid md:grid-cols-3 gap-12 mb-12">
-                    <!-- Company Info -->
-                    <div>
-                        <div class="font-mono font-bold text-blueprint text-lg mb-4">GEIO</div>
-                        <p class="text-xs text-neutral-500 font-mono mb-4">
-                            Gestão Inteligente de Operações. Arquitetura de Sistemas para Indústria.
-                        </p>
-                        <p class="text-xs text-neutral-600 font-mono">
-                            © 2026 GEIO GESTÃO INTELIGENTE<br/>
-                            CNPJ: 60.525.751/0001-53
-                        </p>
-                    </div>
-
-                    <!-- Farol Incubadora -->
-                    <div>
-                        <div class="text-xs font-mono text-blueprint font-bold mb-3 uppercase">Desenvolvido em</div>
-                        <p class="text-sm text-neutral-400 font-mono mb-2">
-                            Farol Incubadora de Empresas
-                        </p>
-                        <p class="text-xs text-neutral-600 font-mono leading-relaxed">
-                            Rua Vereador Chico Filgueira<br/>
-                            nº 33, 2º andar, sala 208<br/>
-                            Caiçaras, Patos de Minas - MG
-                        </p>
-                    </div>
-
-                    <!-- Contact -->
-                    <div>
-                        <div class="text-xs font-mono text-blueprint font-bold mb-3 uppercase">Contato</div>
-                        <div class="space-y-2 text-xs text-neutral-400 font-mono">
-                            <p>
-                                <a href="https://wa.me/5534996365898" target="_blank" class="hover:text-blueprint transition">
-                                    📱 WhatsApp: (34) 99636-5898
-                                </a>
-                            </p>
-                            <p>
-                                <a href="mailto:daianegondim@unipam.edu.br" class="hover:text-blueprint transition">
-                                    📧 Email: daianegondim@unipam.edu.br
-                                </a>
-                            </p>
-                            <p>
-                                <a href="https://linkedin.com/in/daiane-gondim" target="_blank" class="hover:text-blueprint transition">
-                                    💼 LinkedIn: Daiane Gondim
-                                </a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="border-t border-gray-800 pt-8">
-                    <p class="text-xs text-neutral-600 font-mono text-center">
-                        Responsável Técnica: <span class="text-blueprint font-bold">Daiane Gondim</span> — Arquiteta-Chefe GEIO
-                    </p>
-                </div>
-            </div>
-        </footer>
+    <!-- CTA Section -->
+    <div class="max-w-5xl mx-auto px-6 mb-32 flex flex-col sm:flex-row items-center justify-center gap-6 relative">
+        <a href="https://pay.kiwify.com.br/fk2GlyS" target="_blank" class="btn-ignition w-full sm:w-auto px-10 py-5 text-white font-mono font-bold rounded-lg transition-all text-xs uppercase tracking-[0.2em] text-center shadow-xl">
+            Obter Matriz e Laudo Agora
+        </a>
+        <a href="https://wa.me/5534996365898?text=Olá,%20rodei%20o%20simulador%20e%20gostaria%20de%20entender%20melhor%20a%20auditoria." target="_blank" class="w-full sm:w-auto px-10 py-5 bg-transparent border border-[#0047AB]/50 text-[#0047AB] hover:bg-[#0047AB] hover:text-white font-mono font-bold rounded-lg transition-all text-xs uppercase tracking-[0.2em] text-center backdrop-blur-sm">
+            Falar com a Arquiteta-Chefe
+        </a>
     </div>
 
-    <!-- Three.js Background -->
+    <!-- Solutions Section -->
+    <section class="max-w-5xl mx-auto px-6 py-20 border-t border-[#262626] mb-20 relative">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-20 bg-gradient-to-b from-[#0047AB] to-transparent"></div>
+        <h3 class="text-[10px] font-mono text-center text-neutral-500 uppercase tracking-[0.5em] mb-16">Solução Estrutural Imediata</h3>
+        
+        <div class="grid md:grid-cols-2 gap-10 font-mono">
+            <div class="glass-panel p-8 rounded-xl hover:border-blue-900/50 transition-all group">
+                <div class="text-[#0047AB] text-[10px] mb-4 font-bold tracking-[0.2em]">[ ARTEFATO 01 — CONFIDENCIAL ]</div>
+                <h4 class="text-xl font-black text-white mb-4 font-sans tracking-tight group-hover:text-blue-400 transition-colors">Laudo de Diagnóstico Estrutural</h4>
+                <p class="text-xs text-neutral-400 leading-relaxed mb-6">Mapeamento completo de incompatibilidades organizacionais com métricas IIO/CCS e roadmap de correção arquitetural.</p>
+                <a href="https://pay.kiwify.com.br/fk2GlyS" target="_blank" class="text-[#0047AB] text-xs font-bold uppercase tracking-[0.15em] hover:text-blue-400 transition-colors">Solicitar Análise →</a>
+            </div>
+
+            <div class="glass-panel p-8 rounded-xl hover:border-blue-900/50 transition-all group">
+                <div class="text-[#0047AB] text-[10px] mb-4 font-bold tracking-[0.2em]">[ ARTEFATO 02 — CONFIDENCIAL ]</div>
+                <h4 class="text-xl font-black text-white mb-4 font-sans tracking-tight group-hover:text-blue-400 transition-colors">Matriz de Recomendações</h4>
+                <p class="text-xs text-neutral-400 leading-relaxed mb-6">Priorização paramétrica de intervenções com estimativas de ROI, timeline de implementação e KPIs de sucesso.</p>
+                <a href="https://pay.kiwify.com.br/fk2GlyS" target="_blank" class="text-[#0047AB] text-xs font-bold uppercase tracking-[0.15em] hover:text-blue-400 transition-colors">Acessar Matriz →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advanced Scan CTA -->
+    <section class="max-w-5xl mx-auto px-6 py-16 mb-20 relative">
+        <div class="glass-panel p-12 rounded-xl border-2 border-[#0047AB]/30 bg-gradient-to-br from-[#0047AB]/5 to-transparent">
+            <div class="text-center space-y-6">
+                <div class="inline-flex items-center gap-2 text-[10px] font-mono tracking-widest border border-[#0047AB]/50 text-[#0047AB] uppercase px-4 py-1.5 rounded-full bg-black/40 backdrop-blur-sm">
+                    <span class="w-1 h-1 bg-blue-500 rounded-full animate-pulse"></span>
+                    Análise Avançada Disponível
+                </div>
+                <h3 class="text-3xl md:text-4xl font-black text-white tracking-tight">Auditoria Paramétrica Completa</h3>
+                <p class="text-neutral-400 max-w-2xl mx-auto leading-relaxed">Engajamento de consultoria estruturada com Daiane Gondim, Chief Architect, incluindo diagnóstico aprofundado, workshops de alinhamento e plano de transformação.</p>
+                <a href="https://wa.me/5534996365898?text=Gostaria%20de%20agendar%20uma%20auditoria%20paramétrica%20completa." target="_blank" class="btn-ignition inline-block px-12 py-5 text-white font-mono font-bold rounded-lg transition-all text-xs uppercase tracking-[0.2em] shadow-xl">
+                    Agendar Consultoria (R$ 12.000)
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-[#262626] py-12 px-6 relative">
+        <div class="max-w-5xl mx-auto">
+            <div class="grid md:grid-cols-3 gap-12 mb-12 font-mono text-xs">
+                <div>
+                    <h4 class="text-white font-bold uppercase tracking-[0.2em] mb-4">Empresa</h4>
+                    <p class="text-neutral-500 leading-relaxed">GEIO Framework — Gestão Inteligente Operacional. Consultoria estrutural para indústria 4.0.</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold uppercase tracking-[0.2em] mb-4">Localização</h4>
+                    <p class="text-neutral-500 leading-relaxed">
+                        Farol Incubadora<br/>
+                        Patos de Minas, MG<br/>
+                        Brasil
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold uppercase tracking-[0.2em] mb-4">Contato</h4>
+                    <p class="text-neutral-500 leading-relaxed">
+                        <a href="https://www.linkedin.com/in/daiane-gondim/" target="_blank" class="text-[#0047AB] hover:text-blue-400 transition-colors">LinkedIn: Daiane Gondim</a><br/>
+                        Chief Architect & Founder
+                    </p>
+                </div>
+            </div>
+
+            <div class="border-t border-[#262626] pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[9px] text-neutral-600 font-mono">
+                <p>&copy; 2026 GEIO Framework. Todos os direitos reservados.</p>
+                <div class="flex gap-6">
+                    <a href="#" onclick="abrirModal('modal-privacidade')" class="hover:text-[#0047AB] transition-colors">Privacidade</a>
+                    <a href="#" onclick="abrirModal('modal-termos')" class="hover:text-[#0047AB] transition-colors">Termos</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Privacy Modal -->
+    <div id="modal-privacidade" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
+        <div class="glass-panel rounded-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto p-8 font-mono text-xs text-neutral-400 space-y-6 relative">
+            <div class="flex justify-between items-center border-b border-[#262626] pb-4">
+                <h3 class="text-white font-sans font-black text-sm uppercase tracking-widest text-[#0047AB]">[POLÍTICA DE PRIVACIDADE LGPD]</h3>
+                <button onclick="fecharModal('modal-privacidade')" class="text-neutral-500 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+            <div class="space-y-4 leading-relaxed">
+                <p class="text-white font-bold uppercase tracking-widest">1. TRATAMENTO DE DADOS (ART. 7º, LGPD)</p>
+                <p>Em total conformidade com a Lei Geral de Proteção de Dados, declaramos que os dados numéricos inseridos na calculadora são processados de forma 100% isolada na memória temporária do seu navegador (Client-Side).</p>
+                <p class="text-white font-bold uppercase tracking-widest mt-6">2. NENHUM ARMAZENAMENTO REMOTO</p>
+                <p>Os parâmetros operacionais não são transmitidos, armazenados ou compartilhados com terceiros. A análise é puramente local.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms Modal -->
+    <div id="modal-termos" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
+        <div class="glass-panel rounded-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto p-8 font-mono text-xs text-neutral-400 space-y-6 relative">
+            <div class="flex justify-between items-center border-b border-[#262626] pb-4">
+                <h3 class="text-white font-sans font-black text-sm uppercase tracking-widest text-[#0047AB]">[TERMOS DE USO]</h3>
+                <button onclick="fecharModal('modal-termos')" class="text-neutral-500 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+            <div class="space-y-4 leading-relaxed">
+                <p class="text-white font-bold uppercase tracking-widest">1. RESPONSABILIDADE</p>
+                <p>A calculadora GEIO fornece estimativas baseadas em parâmetros inseridos. Recomendamos validação com especialistas antes de decisões críticas.</p>
+                <p class="text-white font-bold uppercase tracking-widest mt-6">2. PROPRIEDADE INTELECTUAL</p>
+                <p>O GEIO Framework é propriedade intelectual de Daiane Gondim. Reprodução não autorizada é proibida.</p>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Initialize Three.js Scene
-        let scene, camera, renderer;
-        let particles = [];
+        // --- BACKGROUND CANVAS (PARAMETRIC MESH) ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx_bg = canvas.getContext('2d');
+        let dots = [];
+        const dotCount = 60;
+        const maxDist = 200;
 
-        function initThreeJS() {
-            const canvas = document.getElementById('canvas-bg');
-            const width = window.innerWidth;
-            const height = window.innerHeight;
-
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-            renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-            renderer.setSize(width, height);
-            renderer.setClearColor(0x050505, 0.1);
-            camera.position.z = 50;
-
-            // Create particles
-            const geometry = new THREE.BufferGeometry();
-            const positions = [];
-            const colors = [];
-
-            for (let i = 0; i < 200; i++) {
-                positions.push(
-                    (Math.random() - 0.5) * 200,
-                    (Math.random() - 0.5) * 200,
-                    (Math.random() - 0.5) * 200
-                );
-
-                const color = Math.random() > 0.5 ? 
-                    new THREE.Color(0x0047AB) : 
-                    new THREE.Color(0xEF4444);
-                colors.push(color.r, color.g, color.b);
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            dots = [];
+            for (let i = 0; i < dotCount; i++) {
+                dots.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5
+                });
             }
-
-            geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3));
-            geometry.setAttribute('color', new THREE.BufferAttribute(new Float32Array(colors), 3));
-
-            const material = new THREE.PointsMaterial({
-                size: 0.5,
-                vertexColors: true,
-                transparent: true,
-                opacity: 0.3
-            });
-
-            const points = new THREE.Points(geometry, material);
-            scene.add(points);
-
-            // Animation loop
-            function animate() {
-                requestAnimationFrame(animate);
-                points.rotation.x += 0.0001;
-                points.rotation.y += 0.0002;
-                renderer.render(scene, camera);
-            }
-
-            animate();
-
-            // Handle resize
-            window.addEventListener('resize', () => {
-                const newWidth = window.innerWidth;
-                const newHeight = window.innerHeight;
-                camera.aspect = newWidth / newHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(newWidth, newHeight);
-            });
         }
 
-        // Calculator Functions
-        function updateCalculator() {
-            const engineers = parseFloat(document.getElementById('engineers').value) || 1;
-            const hoursLost = parseFloat(document.getElementById('hoursLost').value) || 0;
-            const hourCost = parseFloat(document.getElementById('hourCost').value) || 1;
-            const weeksPerYear = parseFloat(document.getElementById('weeksPerYear').value) || 1;
+        function drawCanvas() {
+            ctx_bg.clearRect(0, 0, canvas.width, canvas.height);
+            ctx_bg.fillStyle = 'rgba(0, 71, 169, 0.3)';
+            ctx_bg.strokeStyle = 'rgba(0, 71, 169, 0.1)';
+            
+            for (let i = 0; i < dots.length; i++) {
+                let d = dots[i];
+                d.x += d.vx;
+                d.y += d.vy;
 
-            const weeklyErosion = engineers * hoursLost * hourCost;
-            const monthlyErosion = weeklyErosion * 4.33;
-            const annualErosion = weeklyErosion * weeksPerYear;
-            const roiDays = Math.ceil(497 / (monthlyErosion / 30));
+                if (d.x < 0 || d.x > canvas.width) d.vx *= -1;
+                if (d.y < 0 || d.y > canvas.height) d.vy *= -1;
 
-            document.getElementById('weeklyErosion').textContent = 
-                'R$ ' + weeklyErosion.toLocaleString('pt-BR', {maximumFractionDigits: 0});
-            document.getElementById('monthlyErosion').textContent = 
-                'R$ ' + monthlyErosion.toLocaleString('pt-BR', {maximumFractionDigits: 0});
-            document.getElementById('annualErosion').textContent = 
-                'R$ ' + annualErosion.toLocaleString('pt-BR', {maximumFractionDigits: 0});
-            document.getElementById('roiDays').textContent = roiDays + ' dia' + (roiDays > 1 ? 's' : '');
+                ctx_bg.beginPath();
+                ctx_bg.arc(d.x, d.y, 1, 0, Math.PI * 2);
+                ctx_bg.fill();
+
+                for (let j = i + 1; j < dots.length; j++) {
+                    let d2 = dots[j];
+                    let dist = Math.hypot(d.x - d2.x, d.y - d2.y);
+                    if (dist < maxDist) {
+                        ctx_bg.lineWidth = 1 - dist / maxDist;
+                        ctx_bg.beginPath();
+                        ctx_bg.moveTo(d.x, d.y);
+                        ctx_bg.lineTo(d2.x, d2.y);
+                        ctx_bg.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(drawCanvas);
         }
 
-        // Event listeners
-        document.getElementById('engineers').addEventListener('input', updateCalculator);
-        document.getElementById('hoursLost').addEventListener('input', updateCalculator);
-        document.getElementById('hourCost').addEventListener('input', updateCalculator);
-        document.getElementById('weeksPerYear').addEventListener('input', updateCalculator);
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+        drawCanvas();
 
-        // Initialize
-        window.addEventListener('load', () => {
-            initThreeJS();
-            updateCalculator();
-        });
+        // --- CALCULATOR LOGIC ---
+        let chartInstance = null;
 
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
+        function calcularErosao() {
+            const pessoas = parseInt(document.getElementById('pessoas').value) || 0;
+            const horas = parseInt(document.getElementById('horas').value) || 0;
+            const custo = parseFloat(document.getElementById('custo').value) || 0;
+
+            if (pessoas <= 0 || horas <= 0 || custo <= 0) {
+                alert("Por favor, insira parâmetros operacionais válidos.");
+                return;
+            }
+
+            const perdaSemanal = pessoas * horas * custo;
+            const perdaMensal = perdaSemanal * 4.333; 
+            const perdaSemestral = perdaMensal * 6;
+            const perdaAnual = perdaMensal * 12;
+
+            document.getElementById('valor-anual').innerText = perdaAnual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+            document.getElementById('estado-inicial').classList.add('hidden');
+            document.getElementById('resultado-grafico').classList.remove('hidden');
+
+            const ctx = document.getElementById('lossChart').getContext('2d');
+            
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            // --- REFINED CHART.JS ---
+            const gradientBlue = ctx.createLinearGradient(0, 0, 0, 400);
+            gradientBlue.addColorStop(0, 'rgba(0, 71, 169, 1)');
+            gradientBlue.addColorStop(1, 'rgba(0, 71, 169, 0.1)');
+
+            const gradientRed = ctx.createLinearGradient(0, 0, 0, 400);
+            gradientRed.addColorStop(0, 'rgba(239, 68, 68, 0.8)');
+            gradientRed.addColorStop(1, 'rgba(239, 68, 68, 0.05)');
+
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['MENSAL', 'SEMESTRAL', 'ANUAL'],
+                    datasets: [{
+                        label: 'Desperdício Acumulado',
+                        data: [Math.round(perdaMensal), Math.round(perdaSemestral), Math.round(perdaAnual)],
+                        backgroundColor: [gradientRed, gradientRed, gradientBlue],
+                        borderColor: ['#EF4444', '#EF4444', '#0047AB'],
+                        borderWidth: 2,
+                        borderRadius: 4,
+                        hoverBorderWidth: 3,
+                        hoverBorderColor: '#FFF',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    },
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0,0,0,0.9)',
+                            titleFont: { family: 'JetBrains Mono', size: 10 },
+                            bodyFont: { family: 'JetBrains Mono', size: 12 },
+                            padding: 12,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return ' PERDA: ' + context.parsed.y.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255,255,255,0.03)', drawBorder: false },
+                            ticks: { 
+                                color: '#525252', 
+                                font: { family: 'JetBrains Mono', size: 9 },
+                                callback: function(value) {
+                                    if (value >= 1000) return 'R$ ' + (value / 1000) + 'k';
+                                    return 'R$ ' + value;
+                                }
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#737373', font: { family: 'JetBrains Mono', size: 10, weight: 'bold' } }
+                        }
+                    }
                 }
             });
-        });
+        }
+
+        // --- UI HELPERS ---
+        function abrirModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function fecharModal(id) {
+            document.getElementById(id).classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
     </script>
+
 </body>
 </html>
