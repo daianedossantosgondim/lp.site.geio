@@ -2,24 +2,24 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-    <title>GEIO | Arquitetura Operacional — Gestão Estrutural da Incompatibilidade Organizacional</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GEIO | Arquitetura Operacional para Indústrias</title>
     <meta name="description" content="GEIO não é consultoria. É Arquitetura Operacional. Diagnóstico estrutural que transforma operações reativas em sistemas previsíveis." />
     <meta name="keywords" content="GEIO, Diagnóstico Operacional, Arquitetura Organizacional, Incompatibilidade Organizacional, PCP, Eficiência Operacional, Shadow IT, Retrabalho" />
     <meta name="author" content="GEIO - Farol Incubadora de Empresas" />
 
-    <!-- ===== Content Security Policy (Servidor) ===== -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://geio.tech; connect-src 'self' https://geio.tech; frame-src https://pay.kiwify.com.br;">
+    <!-- CSP tambem definida no vercel.json (header do servidor), onde frame-ancestors funciona.
+         Esta meta e apenas defesa em profundidade. Inclui 'unsafe-eval' porque o Tailwind CDN exige. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self'; frame-src https://pay.kiwify.com.br;">
 
     <!-- ===== SEO COMPLETO ===== -->
     <link rel="canonical" href="https://geio.tech" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <link rel="icon" type="image/png" href="https://geio.tech/favicon.png" />
-    <link rel="icon" type="image/x-icon" href="https://geio.tech/favicon.ico" />
     <link rel="apple-touch-icon" href="https://geio.tech/favicon.png" />
     <meta name="theme-color" content="#05080c" />
 
-    <!-- ===== SCHEMA.ORG (JSON-LD) — REVISADO ===== -->
+    <!-- ===== SCHEMA.ORG (JSON-LD) ===== -->
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -43,11 +43,10 @@
             "image": "https://geio.tech/og-image.jpg"
         }
     </script>
-
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
-            "@type": "Organization",
+            "@type": "ProfessionalService",
             "name": "GEIO — Gestão Estrutural da Incompatibilidade Organizacional",
             "description": "Framework proprietário de diagnóstico, projeto e governança de sistemas organizacionais.",
             "url": "https://geio.tech",
@@ -77,7 +76,7 @@
         }
     </script>
 
-    <!-- ===== OPEN GRAPH — REVISADO ===== -->
+    <!-- ===== OPEN GRAPH ===== -->
     <meta property="og:title" content="GEIO | Diagnóstico e Arquitetura de Inteligência Operacional" />
     <meta property="og:description" content="Simule em 60 segundos o impacto financeiro do retrabalho e da fragmentação operacional. Receba Laudo PDF + Matriz Paramétrica." />
     <meta property="og:type" content="website" />
@@ -128,7 +127,7 @@
             scroll-behavior: smooth;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            -webkit-text-size-adjust: 100%; /* Impede ajuste automático de fonte no iOS */
+            -webkit-text-size-adjust: 100%;
         }
 
         body {
@@ -190,7 +189,6 @@
             color: white;
             caret-color: var(--blue-cobalt);
             font-variant-numeric: tabular-nums;
-            /* Ajuste para mobile: fonte no mínimo 16px para evitar zoom automático */
             font-size: 16px;
             padding: 12px 16px;
             border-radius: 0.5rem;
@@ -227,6 +225,8 @@
             letter-spacing: 0.2em;
             font-weight: bold;
             border-radius: 0.5rem;
+            color: white;
+            text-decoration: none;
         }
 
         .btn-primary::after {
@@ -248,6 +248,8 @@
             box-shadow: 0 0 40px rgba(0, 85, 255, 0.5), 0 0 80px rgba(0, 85, 255, 0.15);
             transform: translateY(-2px);
             border-color: #1a6fd4;
+            color: white;
+            text-decoration: none;
         }
 
         .btn-primary:active {
@@ -281,12 +283,14 @@
             letter-spacing: 0.2em;
             font-weight: bold;
             border-radius: 0.5rem;
+            text-decoration: none;
         }
 
         .btn-secondary:hover {
             background: rgba(0, 85, 255, 0.08);
             border-color: rgba(0, 85, 255, 0.7);
             color: white;
+            text-decoration: none;
         }
 
         .btn-secondary:active {
@@ -387,7 +391,6 @@
             background: #333;
         }
 
-        /* Firefox */
         * {
             scrollbar-width: thin;
             scrollbar-color: #1a1a1a #050505;
@@ -395,46 +398,23 @@
 
         /* ===== ANIMAÇÕES ===== */
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes slideUp {
-            from {
-                transform: translateY(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.98);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         @keyframes pulse-glow {
-            0%,
-            100% {
-                box-shadow: 0 0 20px rgba(0, 85, 255, 0.3);
-            }
-            50% {
-                box-shadow: 0 0 40px rgba(0, 85, 255, 0.6);
-            }
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 85, 255, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(0, 85, 255, 0.6); }
         }
 
         .animate-fade-up {
@@ -719,40 +699,34 @@
            CORREÇÕES DE RESPONSIVIDADE MOBILE
            ============================================================ */
         @media (max-width: 768px) {
-            /* Evita overflow horizontal */
             body, .max-w-6xl, .glass-panel, .glass-panel-blue {
                 max-width: 100vw;
                 overflow-x: hidden;
             }
 
-            /* Reduz padding do body para mobile */
             body {
                 padding-top: 60px;
             }
 
-            /* Hero tipografia mais compacta */
             #hero-title {
-                font-size: 2.25rem !important;  /* ~36px */
+                font-size: 2.25rem !important;
                 line-height: 1.1 !important;
                 letter-spacing: -0.02em;
                 word-break: break-word;
             }
 
-            /* Botões empilhados e 100% largura */
             .btn-primary, .btn-secondary {
                 width: 100%;
                 text-align: center;
                 padding: 14px 10px;
-                white-space: normal; /* Permite quebra de texto */
+                white-space: normal;
             }
 
-            /* Metric cards ajustados */
             .metric-card {
                 border-left-width: 1px;
                 padding-left: 12px;
             }
 
-            /* Tabela responsiva */
             table {
                 font-size: 0.75rem;
             }
@@ -761,37 +735,31 @@
                 word-break: break-word;
             }
 
-            /* Simulador inputs e botão maiores para toque */
             #calculadora .glass-panel {
                 padding: 20px 12px !important;
             }
             .glass-input {
-                font-size: 16px; /* Evita zoom no iOS */
+                font-size: 16px;
                 padding: 12px 10px;
             }
 
-            /* Gráfico altura reduzida */
             #lossChart {
                 height: 200px !important;
             }
 
-            /* Ajusta números grandes no resultado */
             #resultado-grafico .text-3xl {
                 font-size: 1.75rem !important;
             }
 
-            /* Combo cards empilham */
             .grid.md\:grid-cols-3 {
                 grid-template-columns: 1fr;
             }
 
-            /* Espaçamento entre seções */
             section {
                 padding-top: 50px;
                 padding-bottom: 50px;
             }
 
-            /* Menu mobile */
             #mainNav {
                 border-radius: 0 0 12px 12px;
                 margin-top: 8px;
@@ -801,7 +769,6 @@
                 padding: 14px 18px;
             }
 
-            /* Modal com menos padding */
             #modal-termos .glass-panel,
             #modal-privacidade .glass-panel {
                 padding: 24px 16px !important;
@@ -810,7 +777,6 @@
                 overflow-y: auto;
             }
 
-            /* WhatsApp flutuante reposicionado para não colidir com LGPD */
             .fixed.bottom-8.right-8 {
                 bottom: 100px !important;
                 right: 20px !important;
@@ -822,7 +788,6 @@
                 margin: 0;
             }
 
-            /* Blueprint links menores */
             .bp-link {
                 font-size: 1.4rem !important;
                 gap: 10px;
@@ -834,7 +799,6 @@
         }
 
         @media (max-width: 480px) {
-            /* Ajustes extras para telas muito pequenas */
             #hero-title {
                 font-size: 1.8rem !important;
             }
@@ -859,7 +823,6 @@
             }
         }
 
-        /* Ajuste para telas muito pequenas (ex: iPhone SE) */
         @media (max-width: 375px) {
             #hero-title {
                 font-size: 1.6rem !important;
@@ -992,10 +955,10 @@
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <a href="#calculadora" class="btn-primary text-white font-mono font-bold py-5 px-10 rounded-lg uppercase tracking-[0.2em] text-xs animate-pulse-glow">
+            <a href="#calculadora" class="btn-primary animate-pulse-glow">
                 Calcular Perda Operacional
             </a>
-            <a href="https://wa.me/5534996365898?text=Olá,%20acessei%20o%20site%20da%20GEIO%20e%20quero%20entender%20melhor%20o%20Combo%20de%20Diagnóstico." target="_blank" rel="noopener noreferrer" class="btn-secondary font-mono font-bold py-5 px-10 rounded-lg uppercase tracking-[0.2em] text-xs">
+            <a href="https://wa.me/5534996365898?text=Olá,%20acessei%20o%20site%20da%20GEIO%20e%20quero%20entender%20melhor%20o%20Combo%20de%20Diagnóstico." target="_blank" rel="noopener noreferrer" class="btn-secondary">
                 Falar com a Arquiteta-Chefe
             </a>
         </div>
@@ -1050,23 +1013,23 @@
                     <div class="space-y-6">
                         <div>
                             <label class="block text-[10px] font-mono uppercase text-neutral-500 mb-2 tracking-widest" for="pessoas">Engenheiros / Analistas na Operação:</label>
-                            <input type="number" id="pessoas" class="glass-input w-full rounded-lg p-4 text-white focus:outline-none font-mono text-lg" value="3" min="1" max="1000" aria-describedby="pessoas-desc">
+                            <input type="number" id="pessoas" class="glass-input" value="3" min="1" max="1000" aria-describedby="pessoas-desc">
                             <p id="pessoas-desc" class="text-[8px] text-neutral-700 mt-1 font-mono sr-only">Número de profissionais técnicos envolvidos na operação</p>
                         </div>
                         <div>
                             <label class="block text-[10px] font-mono uppercase text-neutral-500 mb-2 tracking-widest" for="horas">Horas Perdidas por Pessoa / Semana:</label>
-                            <input type="number" id="horas" class="glass-input w-full rounded-lg p-4 text-white focus:outline-none font-mono text-lg" value="12" min="1" max="168" aria-describedby="horas-desc">
+                            <input type="number" id="horas" class="glass-input" value="12" min="1" max="168" aria-describedby="horas-desc">
                             <p id="horas-desc" class="text-[8px] text-neutral-700 mt-1 font-mono sr-only">Horas desperdiçadas com retrabalho, controles manuais e Shadow IT</p>
                         </div>
                         <div>
                             <label class="block text-[10px] font-mono uppercase text-neutral-500 mb-2 tracking-widest" for="custo">Custo Médio da Hora Técnica (R$):</label>
-                            <input type="number" id="custo" class="glass-input w-full rounded-lg p-4 text-white focus:outline-none font-mono text-lg" value="50" min="10" max="10000" aria-describedby="custo-desc">
+                            <input type="number" id="custo" class="glass-input" value="50" min="10" max="10000" aria-describedby="custo-desc">
                             <p id="custo-desc" class="text-[8px] text-neutral-700 mt-1 font-mono sr-only">Custo médio da hora trabalhada considerando salário e encargos</p>
                         </div>
                     </div>
                 </div>
                 <div class="mt-8">
-                    <button onclick="calcularErosao()" class="btn-primary w-full text-white font-mono font-bold py-5 rounded-lg uppercase tracking-[0.2em] text-xs shadow-lg" aria-label="Calcular erosão financeira">
+                    <button onclick="calcularErosao()" class="btn-primary w-full" aria-label="Calcular erosão financeira">
                         Calcular Erosão Financeira
                     </button>
                     <div class="flex items-center justify-center gap-2 mt-4 opacity-40">
@@ -1115,7 +1078,7 @@
                             <span class="text-[9px] uppercase tracking-widest text-neutral-600">por ano sustentando retrabalhos e silos informacionais.</span>
                         </p>
                     </div>
-                    <a href="#combo" class="btn-primary block w-full text-white font-mono font-bold text-xs py-4 rounded-lg uppercase tracking-[0.2em]">
+                    <a href="#combo" class="btn-primary block w-full">
                         Estancar Esta Perda Agora
                     </a>
                 </div>
@@ -1283,7 +1246,7 @@
             <p class="text-[12px] font-mono text-[#0055ff] uppercase tracking-widest mb-4">Acesso Imediato</p>
             <h3 class="text-2xl md:text-4xl font-black text-white mb-4">Combo Completo de Diagnóstico GEIO</h3>
             <p class="text-neutral-400 text-sm max-w-xl mx-auto mb-8 leading-relaxed">Laudo de Diagnóstico Estrutural + Matriz Paramétrica de Rastreamento + Termo de Licença de Uso. Entrega digital imediata via Kiwify.</p>
-            <a href="https://pay.kiwify.com.br/fk2GlyS" target="_blank" rel="noopener noreferrer" class="btn-primary inline-block text-white font-mono font-bold py-5 px-12 rounded-lg uppercase tracking-[0.2em] text-xs shadow-[0_0_60px_rgba(0,85,255,0.4)]">Adquirir Combo Agora</a>
+            <a href="https://pay.kiwify.com.br/fk2GlyS" target="_blank" rel="noopener noreferrer" class="btn-primary shadow-[0_0_60px_rgba(0,85,255,0.4)]">Adquirir Combo Agora</a>
             <p class="text-[12px] font-mono text-neutral-600 mt-4 uppercase tracking-widest">
                 Pagamento único · <span class="text-[#0055ff]">R$ 497</span> · Entrega digital imediata via <span class="text-[#0055ff]">Kiwify</span> · Acesso aos 3 artefatos
             </p>
@@ -1344,12 +1307,15 @@
         <div class="grid md:grid-cols-2 gap-16 items-center">
             <div>
                 <h2 id="arquiteta-titulo" class="text-3xl md:text-4xl font-black text-white tracking-tighter mb-6 leading-tight">Daiane Gondim<br/><span class="text-[#0055ff]">Arquiteta-Chefe GEIO</span></h2>
-                <p class="text-neutral-400 text-sm leading-relaxed mb-6">Técnica em PCP com formação em Engenharia de Sistemas, Daiane Gondim passou anos no chão de fábrica vendo o mesmo padrão se repetir: equipes competentes presas em sistemas incompatíveis. A GEIO nasceu dessa observação — não de uma teoria acadêmica, mas de evidências operacionais reais.</p>
-                <p class="text-neutral-400 text-sm leading-relaxed mb-8">A GEIO é desenvolvida no ecossistema da <strong class="text-white">Farol Incubadora de Empresas (FEPAM)</strong>, em Patos de Minas - MG, com metodologia alinhada aos princípios de Engenharia de Sistemas do MIT e à Teoria das Restrições (TOC).</p>
+                <p class="text-neutral-400 text-sm leading-relaxed mb-6"><strong class="text-white">Pesquisadora independente</strong> e Técnica em Planejamento e Controle da Produção pelo SENAI, Daiane Gondim é a desenvolvedora do framework GEIO. Sua pesquisa investiga a estruturação de processos decisórios em operações complexas: o estado em que processos, sistemas e estruturas humanas passam a operar sob lógicas contraditórias — e como essa incompatibilidade pode ser prevenida por design.</p>
+                <p class="text-neutral-400 text-sm leading-relaxed mb-8">A fundamentação teórica da GEIO deriva do estudo sistemático de <strong class="text-white">Engenharia de Sistemas</strong> e <strong class="text-white">Sistemas Logísticos</strong> a partir do material aberto do MIT OpenCourseWare — com ênfase em <em>Fundamentals of Systems Engineering</em> (16.842), <em>Supply Chain Planning</em> (15.762J) e <em>Manufacturing Systems and Supply Chain Design</em> (15.763J) —, articulado à Teoria das Restrições (TOC) e formalizado na Matriz de Alinhamento Arquitetural MIT × GEIO. O framework é desenvolvido no ecossistema da <strong class="text-white">Farol Incubadora de Empresas (FEPAM)</strong>, em Patos de Minas - MG.</p>
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="glass-panel p-4 rounded-xl"><p class="text-[12px] font-mono text-neutral-600 uppercase tracking-widest mb-1">Formação</p><p class="text-sm text-white font-bold">Técnica em PCP</p><p class="text-xs text-neutral-500">Engenharia de Sistemas</p></div>
+                    <div class="glass-panel p-4 rounded-xl"><p class="text-[12px] font-mono text-neutral-600 uppercase tracking-widest mb-1">Atuação</p><p class="text-sm text-white font-bold">Pesquisadora Independente</p><p class="text-xs text-neutral-500">Desenvolvedora do framework GEIO v3.0</p></div>
+                    <div class="glass-panel p-4 rounded-xl"><p class="text-[12px] font-mono text-neutral-600 uppercase tracking-widest mb-1">Formação</p><p class="text-sm text-white font-bold">Técnica em PCP</p><p class="text-xs text-neutral-500">SENAI · 800h · Controle e Processos Industriais</p></div>
+                    <div class="glass-panel p-4 rounded-xl"><p class="text-[12px] font-mono text-neutral-600 uppercase tracking-widest mb-1">Base Teórica</p><p class="text-sm text-white font-bold">Engenharia de Sistemas</p><p class="text-xs text-neutral-500">MIT OpenCourseWare · 16.842 · 15.762J · 15.763J</p></div>
+                    <div class="glass-panel p-4 rounded-xl"><p class="text-[12px] font-mono text-neutral-600 uppercase tracking-widest mb-1">Metodologia</p><p class="text-sm text-white font-bold">MIT + TOC + GEIO</p><p class="text-xs text-neutral-500">Matriz de Alinhamento Arquitetural</p></div>
+                    <div class="glass-panel p-4 rounded-xl"><p class="text-[12px] font-mono text-neutral-600 uppercase tracking-widest mb-1">Em curso</p><p class="text-sm text-white font-bold">Computação Gráfica</p><p class="text-xs text-neutral-500">UNIPAM</p></div>
                     <div class="glass-panel p-4 rounded-xl"><p class="text-[12px] font-mono text-neutral-600 uppercase tracking-widest mb-1">Ecossistema</p><p class="text-sm text-white font-bold">Farol Incubadora</p><p class="text-xs text-neutral-500">FEPAM · Patos de Minas</p></div>
-                    <div class="glass-panel p-4 rounded-xl"><p class="text-[12px] font-mono text-neutral-600 uppercase tracking-widest mb-1">Metodologia</p><p class="text-sm text-white font-bold">MIT + TOC + GEIO</p><p class="text-xs text-neutral-500">Framework proprietário v3.0</p></div>
                 </div>
             </div>
             <div class="space-y-6">
@@ -1358,7 +1324,7 @@
                     <blockquote class="text-lg font-black text-white leading-tight mb-4">"A GEIO não nasce para organizar o caos. Ela nasce para tornar a ordem inevitável."</blockquote>
                     <p class="text-xs text-neutral-500 leading-relaxed">Não se trata de mais um método de gestão. É uma mudança de paradigma: de reativo para previsível, de dependente para autônomo, de caótico para estruturalmente impossível de falhar.</p>
                 </div>
-                <a href="https://www.linkedin.com/in/daianegondim" target="_blank" rel="noopener noreferrer" class="btn-secondary w-full block text-center font-mono font-bold py-4 px-8 rounded-lg uppercase tracking-[0.2em] text-xs">Ver Perfil no LinkedIn</a>
+                <a href="https://www.linkedin.com/in/daianegondim" target="_blank" rel="noopener noreferrer" class="btn-secondary w-full block text-center">Ver Perfil no LinkedIn</a>
             </div>
         </div>
     </section>
@@ -1404,8 +1370,8 @@
                 </h2>
                 <p class="text-neutral-400 text-sm max-w-xl mx-auto mb-10 leading-relaxed">O Combo de Diagnóstico GEIO entrega o laudo estrutural, a matriz paramétrica e a blindagem jurídica que sua operação precisa para parar de improvisar e começar a arquitetar.</p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="https://pay.kiwify.com.br/fk2GlyS" target="_blank" rel="noopener noreferrer" class="btn-primary text-white font-mono font-bold py-5 px-12 rounded-lg uppercase tracking-[0.2em] text-xs shadow-[0_0_60px_rgba(0,85,255,0.4)]">Adquirir Combo de Diagnóstico</a>
-                    <a href="https://wa.me/5534996365898?text=Olá,%20quero%20entender%20melhor%20o%20Combo%20de%20Diagnóstico%20GEIO%20para%20minha%20operação." target="_blank" rel="noopener noreferrer" class="btn-secondary font-mono font-bold py-5 px-10 rounded-lg uppercase tracking-[0.2em] text-xs">Conversar com a Arquiteta</a>
+                    <a href="https://pay.kiwify.com.br/fk2GlyS" target="_blank" rel="noopener noreferrer" class="btn-primary shadow-[0_0_60px_rgba(0,85,255,0.4)]">Adquirir Combo de Diagnóstico</a>
+                    <a href="https://wa.me/5534996365898?text=Olá,%20quero%20entender%20melhor%20o%20Combo%20de%20Diagnóstico%20GEIO%20para%20minha%20operação." target="_blank" rel="noopener noreferrer" class="btn-secondary">Conversar com a Arquiteta</a>
                 </div>
                 <p class="text-[12px] font-mono text-neutral-700 mt-6 uppercase tracking-widest">
                     Pagamento único · Entrega digital imediata via <span class="text-[#0055ff]">Kiwify</span> · Sem mensalidades
@@ -1496,11 +1462,12 @@
     ============================================================ -->
     <script>
         // ==========================================================
-        // 1. THREE.JS — GÊMEO DIGITAL ESTRUTURAL
+        // 1. THREE.JS — GEMEO DIGITAL ESTRUTURAL
         // ==========================================================
         (function initThree() {
             const container = document.getElementById('three-container');
             if (!container || typeof THREE === 'undefined') return;
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
             camera.position.set(0, 2, 8);
@@ -1587,7 +1554,7 @@
             }
 
             // Cleanup on page unload
-            window.addEventListener('beforeunload', function() {
+            window.addEventListener('pagehide', function() {
                 if (animationId) cancelAnimationFrame(animationId);
                 renderer.dispose();
                 geometry.dispose();
@@ -1634,13 +1601,17 @@
         // ==========================================================
         function openBlueprint() {
             const bp = document.getElementById('blueprint-menu');
+            if (!bp) return;
             bp.classList.add('open');
             document.body.style.overflow = 'hidden';
-            bp.querySelector('button').focus();
+            const firstBtn = bp.querySelector('button');
+            if (firstBtn) firstBtn.focus();
         }
 
         function closeBlueprint() {
-            document.getElementById('blueprint-menu').classList.remove('open');
+            const bp = document.getElementById('blueprint-menu');
+            if (!bp) return;
+            bp.classList.remove('open');
             document.body.style.overflow = 'auto';
         }
         document.addEventListener('keydown', function(e) {
@@ -1673,7 +1644,13 @@
             document.getElementById('valor-anual').innerText = perdaAnual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
             document.getElementById('estado-inicial').classList.add('hidden');
             document.getElementById('resultado-grafico').classList.remove('hidden');
-            const ctx = document.getElementById('lossChart').getContext('2d');
+            const canvas = document.getElementById('lossChart');
+            if (!canvas || typeof Chart === 'undefined') {
+                console.warn('Chart.js indisponivel — valores exibidos sem grafico.');
+                document.getElementById('resultado-grafico').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                return;
+            }
+            const ctx = canvas.getContext('2d');
             if (chartInstance) chartInstance.destroy();
             chartInstance = new Chart(ctx, {
                 type: 'bar',
@@ -1706,23 +1683,30 @@
         // ==========================================================
         function abrirModal(id) {
             const modal = document.getElementById(id);
+            if (!modal) return;
             modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
             modal.querySelector('button')?.focus();
         }
 
         function fecharModal(id) {
-            document.getElementById(id).classList.add('hidden');
+            const modal = document.getElementById(id);
+            if (!modal) return;
+            modal.classList.add('hidden');
             document.body.style.overflow = 'auto';
         }
 
         function aceitarCookies() {
-            localStorage.setItem('geio-cookie-consent', 'true');
-            document.getElementById('lgpd-banner').style.display = 'none';
+            try { localStorage.setItem('geio-cookie-consent', 'true'); } catch (e) {}
+            const b = document.getElementById('lgpd-banner');
+            if (b) b.style.display = 'none';
         }
-        if (localStorage.getItem('geio-cookie-consent') === 'true') {
-            document.getElementById('lgpd-banner').style.display = 'none';
-        }
+        try {
+            if (localStorage.getItem('geio-cookie-consent') === 'true') {
+                const b0 = document.getElementById('lgpd-banner');
+                if (b0) b0.style.display = 'none';
+            }
+        } catch (e) {}
 
         document.querySelectorAll('[id^="modal-"]').forEach(modal => {
             modal.addEventListener('click', function(e) { if (e.target === this) fecharModal(this.id); });
@@ -1736,10 +1720,12 @@
         // MENU MOBILE
         const menuToggle = document.getElementById('menuToggle');
         const mainNav = document.getElementById('mainNav');
-        menuToggle.addEventListener('click', function() {
-            mainNav.classList.toggle('open');
-            menuToggle.setAttribute('aria-expanded', mainNav.classList.contains('open') ? 'true' : 'false');
-        });
+        if (menuToggle && mainNav) {
+            menuToggle.addEventListener('click', function() {
+                mainNav.classList.toggle('open');
+                menuToggle.setAttribute('aria-expanded', mainNav.classList.contains('open') ? 'true' : 'false');
+            });
+        }
         document.querySelectorAll('#mainNav a').forEach(link => {
             link.addEventListener('click', function() {
                 mainNav.classList.remove('open');
@@ -1789,11 +1775,7 @@
             });
         });
 
-        console.log('%c🚀 GEIO v3.0 — Landing Page 10/10 Pronta para Produção', 'color: #0055ff; font-weight: bold; font-size: 14px;');
-        console.log('%c📈 SEO · Schema.org · OG · Twitter Card · Canonical', 'color: #8a8a8a;');
-        console.log('%c🔒 CSP · LGPD · Client-Side · noopener', 'color: #8a8a8a;');
-        console.log('%c♿ Acessibilidade · ARIA · Skip Link · Focus Visible · Reduced Motion', 'color: #8a8a8a;');
-        console.log('%c✅ Links: Kiwify, WhatsApp, LinkedIn — todos verificados', 'color: #8a8a8a;');
     </script>
+
 </body>
 </html>
