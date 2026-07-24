@@ -2,33 +2,24 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-    <title>GEIO | Arquitetura Operacional — Gestão Estrutural da Incompatibilidade Organizacional</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GEIO | Arquitetura Operacional para Indústrias</title>
     <meta name="description" content="GEIO não é consultoria. É Arquitetura Operacional. Diagnóstico estrutural que transforma operações reativas em sistemas previsíveis." />
     <meta name="keywords" content="GEIO, Diagnóstico Operacional, Arquitetura Organizacional, Incompatibilidade Organizacional, PCP, Eficiência Operacional, Shadow IT, Retrabalho" />
     <meta name="author" content="GEIO - Farol Incubadora de Empresas" />
 
-    <!-- ===== Content Security Policy (Servidor) ===== -->
-    <!--
-      IMPORTANTE: A tag meta CSP não é um padrão oficial e não é reconhecida pelos navegadores.
-      Para aplicar CSP, você DEVE configurá-la no servidor (ex: header HTTP Content-Security-Policy).
-      Removi a tag meta para não dar uma falsa sensação de segurança.
-      Também removi https://cdnjs.cloudflare.com e https://cdn.jsdelivr.net duplicados.
-    -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://geio.tech; connect-src 'self' https://geio.tech; frame-src https://pay.kiwify.com.br;">
+    <!-- CSP tambem definida no vercel.json (header do servidor), onde frame-ancestors funciona.
+         Esta meta e apenas defesa em profundidade. Inclui 'unsafe-eval' porque o Tailwind CDN exige. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self'; frame-src https://pay.kiwify.com.br;">
 
     <!-- ===== SEO COMPLETO ===== -->
     <link rel="canonical" href="https://geio.tech" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-    <!--
-      CORREÇÃO: Favicon. O href apontava para um PNG, mas o type era icon. Ajustei para um formato mais compatível.
-      Idealmente, crie um favicon.ico e um favicon.png. O código agora usa o PNG para ambos, com type correto.
-    -->
     <link rel="icon" type="image/png" href="https://geio.tech/favicon.png" />
     <link rel="apple-touch-icon" href="https://geio.tech/favicon.png" />
     <meta name="theme-color" content="#05080c" />
 
-    <!-- ===== SCHEMA.ORG (JSON-LD) — REFINADO ===== -->
+    <!-- ===== SCHEMA.ORG (JSON-LD) ===== -->
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -85,7 +76,7 @@
         }
     </script>
 
-    <!-- ===== OPEN GRAPH — REVISADO ===== -->
+    <!-- ===== OPEN GRAPH ===== -->
     <meta property="og:title" content="GEIO | Diagnóstico e Arquitetura de Inteligência Operacional" />
     <meta property="og:description" content="Simule em 60 segundos o impacto financeiro do retrabalho e da fragmentação operacional. Receba Laudo PDF + Matriz Paramétrica." />
     <meta property="og:type" content="website" />
@@ -1316,12 +1307,15 @@
         <div class="grid md:grid-cols-2 gap-16 items-center">
             <div>
                 <h2 id="arquiteta-titulo" class="text-3xl md:text-4xl font-black text-white tracking-tighter mb-6 leading-tight">Daiane Gondim<br/><span class="text-[#0055ff]">Arquiteta-Chefe GEIO</span></h2>
-                <p class="text-neutral-400 text-sm leading-relaxed mb-6">Técnica em PCP com formação em Engenharia de Sistemas, Daiane Gondim passou anos no chão de fábrica vendo o mesmo padrão se repetir: equipes competentes presas em sistemas incompatíveis. A GEIO nasceu dessa observação — não de uma teoria acadêmica, mas de evidências operacionais reais.</p>
-                <p class="text-neutral-400 text-sm leading-relaxed mb-8">A GEIO é desenvolvida no ecossistema da <strong class="text-white">Farol Incubadora de Empresas (FEPAM)</strong>, em Patos de Minas - MG, com metodologia alinhada aos princípios de Engenharia de Sistemas do MIT e à Teoria das Restrições (TOC).</p>
+                <p class="text-neutral-400 text-sm leading-relaxed mb-6"><strong class="text-white">Pesquisadora independente</strong> e Técnica em Planejamento e Controle da Produção pelo SENAI, Daiane Gondim é a desenvolvedora do framework GEIO. Sua pesquisa investiga a estruturação de processos decisórios em operações complexas: o estado em que processos, sistemas e estruturas humanas passam a operar sob lógicas contraditórias — e como essa incompatibilidade pode ser prevenida por design.</p>
+                <p class="text-neutral-400 text-sm leading-relaxed mb-8">A fundamentação teórica da GEIO deriva do estudo sistemático de <strong class="text-white">Engenharia de Sistemas</strong> e <strong class="text-white">Sistemas Logísticos</strong> a partir do material aberto do MIT OpenCourseWare — com ênfase em <em>Fundamentals of Systems Engineering</em> (16.842), <em>Supply Chain Planning</em> (15.762J) e <em>Manufacturing Systems and Supply Chain Design</em> (15.763J) —, articulado à Teoria das Restrições (TOC) e formalizado na Matriz de Alinhamento Arquitetural MIT × GEIO. O framework é desenvolvido no ecossistema da <strong class="text-white">Farol Incubadora de Empresas (FEPAM)</strong>, em Patos de Minas - MG.</p>
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="glass-panel p-4 rounded-xl"><p class="text-[12px] font-mono text-neutral-600 uppercase tracking-widest mb-1">Formação</p><p class="text-sm text-white font-bold">Técnica em PCP</p><p class="text-xs text-neutral-500">Engenharia de Sistemas</p></div>
+                    <div class="glass-panel p-4 rounded-xl"><p class="text-[12px] font-mono text-neutral-600 uppercase tracking-widest mb-1">Atuação</p><p class="text-sm text-white font-bold">Pesquisadora Independente</p><p class="text-xs text-neutral-500">Desenvolvedora do framework GEIO v3.0</p></div>
+                    <div class="glass-panel p-4 rounded-xl"><p class="text-[12px] font-mono text-neutral-600 uppercase tracking-widest mb-1">Formação</p><p class="text-sm text-white font-bold">Técnica em PCP</p><p class="text-xs text-neutral-500">SENAI · 800h · Controle e Processos Industriais</p></div>
+                    <div class="glass-panel p-4 rounded-xl"><p class="text-[12px] font-mono text-neutral-600 uppercase tracking-widest mb-1">Base Teórica</p><p class="text-sm text-white font-bold">Engenharia de Sistemas</p><p class="text-xs text-neutral-500">MIT OpenCourseWare · 16.842 · 15.762J · 15.763J</p></div>
+                    <div class="glass-panel p-4 rounded-xl"><p class="text-[12px] font-mono text-neutral-600 uppercase tracking-widest mb-1">Metodologia</p><p class="text-sm text-white font-bold">MIT + TOC + GEIO</p><p class="text-xs text-neutral-500">Matriz de Alinhamento Arquitetural</p></div>
+                    <div class="glass-panel p-4 rounded-xl"><p class="text-[12px] font-mono text-neutral-600 uppercase tracking-widest mb-1">Em curso</p><p class="text-sm text-white font-bold">Computação Gráfica</p><p class="text-xs text-neutral-500">UNIPAM</p></div>
                     <div class="glass-panel p-4 rounded-xl"><p class="text-[12px] font-mono text-neutral-600 uppercase tracking-widest mb-1">Ecossistema</p><p class="text-sm text-white font-bold">Farol Incubadora</p><p class="text-xs text-neutral-500">FEPAM · Patos de Minas</p></div>
-                    <div class="glass-panel p-4 rounded-xl"><p class="text-[12px] font-mono text-neutral-600 uppercase tracking-widest mb-1">Metodologia</p><p class="text-sm text-white font-bold">MIT + TOC + GEIO</p><p class="text-xs text-neutral-500">Framework proprietário v3.0</p></div>
                 </div>
             </div>
             <div class="space-y-6">
@@ -1468,11 +1462,12 @@
     ============================================================ -->
     <script>
         // ==========================================================
-        // 1. THREE.JS — GÊMEO DIGITAL ESTRUTURAL
+        // 1. THREE.JS — GEMEO DIGITAL ESTRUTURAL
         // ==========================================================
         (function initThree() {
             const container = document.getElementById('three-container');
             if (!container || typeof THREE === 'undefined') return;
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
             camera.position.set(0, 2, 8);
@@ -1559,7 +1554,7 @@
             }
 
             // Cleanup on page unload
-            window.addEventListener('beforeunload', function() {
+            window.addEventListener('pagehide', function() {
                 if (animationId) cancelAnimationFrame(animationId);
                 renderer.dispose();
                 geometry.dispose();
@@ -1606,13 +1601,17 @@
         // ==========================================================
         function openBlueprint() {
             const bp = document.getElementById('blueprint-menu');
+            if (!bp) return;
             bp.classList.add('open');
             document.body.style.overflow = 'hidden';
-            bp.querySelector('button').focus();
+            const firstBtn = bp.querySelector('button');
+            if (firstBtn) firstBtn.focus();
         }
 
         function closeBlueprint() {
-            document.getElementById('blueprint-menu').classList.remove('open');
+            const bp = document.getElementById('blueprint-menu');
+            if (!bp) return;
+            bp.classList.remove('open');
             document.body.style.overflow = 'auto';
         }
         document.addEventListener('keydown', function(e) {
@@ -1645,7 +1644,13 @@
             document.getElementById('valor-anual').innerText = perdaAnual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
             document.getElementById('estado-inicial').classList.add('hidden');
             document.getElementById('resultado-grafico').classList.remove('hidden');
-            const ctx = document.getElementById('lossChart').getContext('2d');
+            const canvas = document.getElementById('lossChart');
+            if (!canvas || typeof Chart === 'undefined') {
+                console.warn('Chart.js indisponivel — valores exibidos sem grafico.');
+                document.getElementById('resultado-grafico').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                return;
+            }
+            const ctx = canvas.getContext('2d');
             if (chartInstance) chartInstance.destroy();
             chartInstance = new Chart(ctx, {
                 type: 'bar',
@@ -1678,23 +1683,30 @@
         // ==========================================================
         function abrirModal(id) {
             const modal = document.getElementById(id);
+            if (!modal) return;
             modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
             modal.querySelector('button')?.focus();
         }
 
         function fecharModal(id) {
-            document.getElementById(id).classList.add('hidden');
+            const modal = document.getElementById(id);
+            if (!modal) return;
+            modal.classList.add('hidden');
             document.body.style.overflow = 'auto';
         }
 
         function aceitarCookies() {
-            localStorage.setItem('geio-cookie-consent', 'true');
-            document.getElementById('lgpd-banner').style.display = 'none';
+            try { localStorage.setItem('geio-cookie-consent', 'true'); } catch (e) {}
+            const b = document.getElementById('lgpd-banner');
+            if (b) b.style.display = 'none';
         }
-        if (localStorage.getItem('geio-cookie-consent') === 'true') {
-            document.getElementById('lgpd-banner').style.display = 'none';
-        }
+        try {
+            if (localStorage.getItem('geio-cookie-consent') === 'true') {
+                const b0 = document.getElementById('lgpd-banner');
+                if (b0) b0.style.display = 'none';
+            }
+        } catch (e) {}
 
         document.querySelectorAll('[id^="modal-"]').forEach(modal => {
             modal.addEventListener('click', function(e) { if (e.target === this) fecharModal(this.id); });
@@ -1708,10 +1720,12 @@
         // MENU MOBILE
         const menuToggle = document.getElementById('menuToggle');
         const mainNav = document.getElementById('mainNav');
-        menuToggle.addEventListener('click', function() {
-            mainNav.classList.toggle('open');
-            menuToggle.setAttribute('aria-expanded', mainNav.classList.contains('open') ? 'true' : 'false');
-        });
+        if (menuToggle && mainNav) {
+            menuToggle.addEventListener('click', function() {
+                mainNav.classList.toggle('open');
+                menuToggle.setAttribute('aria-expanded', mainNav.classList.contains('open') ? 'true' : 'false');
+            });
+        }
         document.querySelectorAll('#mainNav a').forEach(link => {
             link.addEventListener('click', function() {
                 mainNav.classList.remove('open');
@@ -1761,11 +1775,7 @@
             });
         });
 
-        console.log('%c🚀 GEIO v3.0 — Landing Page 10/10 Pronta para Produção', 'color: #0055ff; font-weight: bold; font-size: 14px;');
-        console.log('%c📈 SEO · Schema.org · OG · Twitter Card · Canonical', 'color: #8a8a8a;');
-        console.log('%c🔒 CSP · LGPD · Client-Side · noopener', 'color: #8a8a8a;');
-        console.log('%c♿ Acessibilidade · ARIA · Skip Link · Focus Visible · Reduced Motion', 'color: #8a8a8a;');
-        console.log('%c✅ Links: Kiwify, WhatsApp, LinkedIn — todos verificados', 'color: #8a8a8a;');
     </script>
+
 </body>
 </html>
